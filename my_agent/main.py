@@ -35,7 +35,7 @@ async def main():
     async def envoyer_message(texte: str):
         """Envoie un message et affiche la réponse."""
         print(f"\n{'='*60}")
-        print(f"👤 Utilisateur : {texte}")
+        print(f"Utilisateur : {texte}")
         print(f"{'='*60}")
 
         contenu = Content(parts=[Part(text=texte)])
@@ -47,7 +47,7 @@ async def main():
             if event.content and event.content.parts:
                 for part in event.content.parts:
                     if hasattr(part, "text") and part.text:
-                        print(f"\n🤖 {event.author} :\n{part.text}")
+                        print(f"\n {event.author} :\n{part.text}")
 
     # Scénario de démonstration
     await envoyer_message("Flutter")
