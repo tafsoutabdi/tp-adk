@@ -36,8 +36,9 @@ async def main():
         session_service=session_service,
     )
 
-    async def envoyer_message(texte: str):
-        """Envoie un message et affiche la réponse."""
+    async def envoyer_message(texte: str, pause: int = 15):
+        """Envoie un message, affiche la réponse, puis attend `pause` secondes
+        pour éviter le rate limit Groq (6 000 TPM sur le plan gratuit)."""
         print(f"\n{'='*60}")
         print(f"Utilisateur : {texte}")
         print(f"{'='*60}")
@@ -53,11 +54,15 @@ async def main():
                     if hasattr(part, "text") and part.text:
                         print(f"\n {event.author} :\n{part.text}")
 
+        if pause > 0:
+            print(f"\n Pause {pause}s (rate limit Groq)…")
+            await asyncio.sleep(pause)
+
     # Scénario de démonstration
     await envoyer_message("Flutter")
     await envoyer_message("CORRECTION: Q1=A, Q2=A, Q3=A, Q4=A, Q5=A")
     await envoyer_message("Python")
-    await envoyer_message("CORRECTION: Q1=B, Q2=B, Q3=B, Q4=B, Q5=B")
+    await envoyer_message("CORRECTION: Q1=B, Q2=B, Q3=B, Q4=B, Q5=B", pause=0)
 
 
 if __name__ == "__main__":
