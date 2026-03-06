@@ -11,9 +11,8 @@ from google.adk.agents.callback_context import CallbackContext
 from google.adk.models.llm_response import LlmResponse
 from google.genai.types import Content, Part, FunctionCall
 from google.adk.tools import agent_tool
-import sys, os
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from my_agent.tools.my_tools import calculer_score, enregistrer_reponses, sauvegarder_reponses_correctes
+
 MODEL = "groq/llama-3.1-8b-instant"
 
 
@@ -80,6 +79,51 @@ def before_quiz_callback(callback_context: CallbackContext, **kwargs) -> None:
     except Exception as e:
         print(f"\n[before_quiz] Erreur : {e}")
 
+def before_progress_callback(callback_context: CallbackContext, **kwargs) -> LlmResponse | None:
+    """
+    before_model_callback — construit le rapport de progression en Python pur
+    et appelle ConseilAgent via AgentTool avant de retourner la réponse.
+    """
+    historique   = callback_context.state.get("historique_scores", [])
+    score_actuel = callback_context.state.get("score_actuel", 0)
+    wrong        = callback_context.state.get("wrong_questions", [])
+
+    print(f"\n[PROGRESS] historique={historique} | wrong={wrong}")
+
+    rapport = "## Progression\n\n"
+
+    if len(historique) > 1:
+        rapport += "**Historique :**\n"
+        for i, s in enumerate(historique, 1):
+            barre = "█" * s["score"] + "░" * (5 - s["score"])
+            rapport += f"- Session {i} : [{barre}] {s['score']}/5\n"
+        scores = [s["score"] for s in historique]
+        if scores[-1] > scores[-2]:
+            rapport += "\n En progression !\n\n"
+        elif scores[-1] < scores[-2]:
+            rapport += "\n En baisse — relis la fiche !\n\n"
+        else:
+            rapport += "\n Stable\n\n"
+    elif len(historique) == 1:
+        rapport += f"**Première session** — Score : {score_actuel}/5\n\n"
+    else:
+        rapport += "**Aucune correction effectuée.**\n\n"
+
+    if wrong:
+        rapport += f"**Questions à retravailler : {', '.join(wrong)}**\n\n"
+        rapport += "Conseil : relis les points correspondants dans la fiche et refais le quiz.\n\n"
+    elif historique:
+        rapport += "**Toutes les questions réussies !**\n\n"
+        rapport += "Bravo ! Tu maîtrises ce sujet.\n\n"
+
+    rapport += "---\nTu veux : **A)** Une nouvelle fiche + quiz  ou  **B)** Refaire le quiz sur le même sujet ?"
+
+    # Stocke pour que ConseilAgent puisse utiliser ces valeurs
+    callback_context.state["rapport_progression"] = rapport
+    callback_context.state["wrong_summary"] = ", ".join(wrong) if wrong else "aucune"
+
+    print(f"\n[PROGRESS] rapport généré ({len(historique)} sessions)")
+    return LlmResponse(content=Content(parts=[Part(text=rapport)]))
 
 def after_quiz_callback(callback_context: CallbackContext) -> None:
     """
@@ -173,7 +217,7 @@ def before_correcteur_callback(callback_context: CallbackContext, **kwargs) -> L
 
 def before_progress_callback(callback_context: CallbackContext, **kwargs) -> LlmResponse | None:
     """
-    before_model_callback — construit le rapport de progression en Python pur.
+    before_model_callback — construit le rapport + appelle ConseilAgent via AgentTool.
     Le LLM du ProgressAgent n'est JAMAIS appelé.
     """
     historique   = callback_context.state.get("historique_scores", [])
@@ -209,6 +253,10 @@ def before_progress_callback(callback_context: CallbackContext, **kwargs) -> Llm
         rapport += "Bravo ! Tu maîtrises ce sujet.\n\n"
 
     rapport += "---\nTu veux : **A)** Une nouvelle fiche + quiz  ou  **B)** Refaire le quiz sur le même sujet ?"
+
+    # Stocke pour que ConseilAgent puisse utiliser ces valeurs via {variables}
+    callback_context.state["rapport_progression"] = rapport
+    callback_context.state["wrong_summary"] = ", ".join(wrong) if wrong else "aucune"
 
     print(f"\n[PROGRESS] rapport généré ({len(historique)} sessions)")
     return LlmResponse(content=Content(parts=[Part(text=rapport)]))
@@ -277,16 +325,31 @@ correcteur_agent = LlmAgent(
     before_model_callback=before_correcteur_callback,
 )
 
+# ConseilAgent via AgentTool — défini AVANT progress_agent
+conseil_agent = LlmAgent(
+    name="ConseilAgent",
+    model=MODEL,
+    description="Donne des conseils de méthode de révision.",
+    include_contents="none",
+    instruction="""
+Score : {score_actuel}/5 | Questions ratées : {wrong_summary}
+Donne 3 conseils de méthode d'apprentissage adaptés en 4 lignes max.
+""",
+    output_key="conseil_result",
+)
+conseil_tool = agent_tool.AgentTool(agent=conseil_agent)
+
 progress_agent = LlmAgent(
     name="ProgressAgent",
     model=MODEL,
-    description="Affiche la progression.",
+    description="Affiche la progression et des conseils de révision.",
     include_contents="none",
     disallow_transfer_to_parent=True,
     disallow_transfer_to_peers=True,
     instruction="Affiche la progression.",
     output_key="progress_result",
     before_model_callback=before_progress_callback,
+    tools=[conseil_tool],
 )
 
 # ConseilAgent via AgentTool

@@ -1,0 +1,243 @@
+{
+  "eval_set_id": "evalset0b9dd4",
+  "name": "evalset0b9dd4",
+  "eval_cases": [
+    {
+      "eval_id": "case28ac67",
+      "conversation": [
+        {
+          "invocation_id": "e-367c3881-d40a-4de5-bd8b-22778f8a79f5",
+          "user_content": {
+            "parts": [
+              {
+                "text": "flutter"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "**Quiz**\n\n**Q1.** Quel est le framework de développement logiciel développé par Google pour créer des applications mobiles et Web ?\n- A) Ionic\n- B) React Native\n- C) Flutter\n- D) Java\n\n**Q2.** Quel est le langage de programmation utilisé pour créer des applications avec Flutter ?\n- A) Swift\n- B) Python\n- C) Dart\n- D) JavaScript\n\n**Q3.** Comment décririez-vous la conception de l'application sous Flutter ?\n- A) Utilisation d'un framework d'application native\n- B) Conception basée sur un arbre de widgets\n- C) Développement côté serveur\n- D) Utilisation d'une base de données\n\n**Q4.** Quelle est la principale différence entre Flutter et Ionic et React Native ?\n- A) Utilisation d'un langage de programmation différent\n- B) Nécessité d'un framework d'application native\n- C) Possibilité de création d'applications mobiles et Web\n- D) Conception de l'application sous forme d'un arbre de widgets\n\n**Q5.** Quel style de conception d'interface utilisateur est utilisé par défaut dans Flutter ?\n- A) Material Design\n- B) React Design\n- C) Design iOS\n- D) Design Android"
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "invocation_events": [
+              {
+                "author": "RevisionOrchestrator",
+                "content": {
+                  "parts": [
+                    {
+                      "function_call": {
+                        "id": "adk-979140f2-8853-488c-96a1-1d5f7e5a01ba",
+                        "args": {
+                          "agent_name": "FlashcardQuizPipeline"
+                        },
+                        "name": "transfer_to_agent"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "author": "RevisionOrchestrator",
+                "content": {
+                  "parts": [
+                    {
+                      "function_response": {
+                        "id": "adk-979140f2-8853-488c-96a1-1d5f7e5a01ba",
+                        "name": "transfer_to_agent",
+                        "response": {
+                          "result": null
+                        }
+                      }
+                    }
+                  ],
+                  "role": "user"
+                }
+              }
+            ]
+          },
+          "creation_timestamp": 1772810815.266796
+        },
+        {
+          "invocation_id": "e-c07b0fc1-c58e-426f-a2f4-216a58236293",
+          "user_content": {
+            "parts": [
+              {
+                "text": "CORRECTION: Q1=A, Q2=A, Q3=A, Q4=A, Q5=A"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "## Progression\n\n**Première session** — Score : 2/5\n\n**Questions à retravailler : Q1, Q2, Q3**\n\nConseil : relis les points correspondants dans la fiche et refais le quiz.\n\n---\nTu veux : **A)** Une nouvelle fiche + quiz  ou  **B)** Refaire le quiz sur le même sujet ?"
+              }
+            ]
+          },
+          "intermediate_data": {
+            "invocation_events": [
+              {
+                "author": "RevisionOrchestrator",
+                "content": {
+                  "parts": [
+                    {
+                      "function_call": {
+                        "id": "adk-5acfd7f2-2461-4866-9abc-52fc5146d137",
+                        "args": {
+                          "agent_name": "CorrectionPipeline"
+                        },
+                        "name": "transfer_to_agent"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "author": "RevisionOrchestrator",
+                "content": {
+                  "parts": [
+                    {
+                      "function_response": {
+                        "id": "adk-5acfd7f2-2461-4866-9abc-52fc5146d137",
+                        "name": "transfer_to_agent",
+                        "response": {
+                          "result": null
+                        }
+                      }
+                    }
+                  ],
+                  "role": "user"
+                }
+              }
+            ]
+          },
+          "creation_timestamp": 1772810842.8685
+        },
+        {
+          "invocation_id": "e-6ce2c837-563b-4946-a644-ed16dfc06d34",
+          "user_content": {
+            "parts": [
+              {
+                "text": "B) Refaire le quiz sur le même sujet ?"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "[Régénère un nouveau quiz sur la fiche : Flutter]\n\n**Quiz**\n\n**Q1.** Quel est le principal avantage des applications créées avec Flutter ?\n- A) Elles sont très complexes\n- B) Elles sont très lentes\n- C) Elles sont très performantes même sur des appareils avec des ressources limitées\n- D) Elles sont très difficiles à créer\n\n**Q2.** Quel est le nom du langage de programmation utilisé pour créer des applications avec Flutter ?\n- A) Swift\n- B) JavaScript\n- C) Dart\n- D) Java\n\n**Q3.** Comment décririez-vous le style de conception d'interface utilisateur utilisé par défaut dans Flutter ?\n- A) Il est semblable à celui d'Android\n- B) Il est semblable à celui d'iOS\n- C) Il est basé sur Material Design\n- D) Il est basé sur la conception personnalisée\n\n**Q4.** Quel est le résultat lorsque vous utilisez la fonctionnalité de rechargement rapide de l'application (Hot Reload) dans Flutter ?\n- A) La modification ne prend pas en compte\n- B) La modification est perdue\n- C) La modification est appliquée rapidement sans nécessiter un redémarrage complet de l'application\n- D) La modification nécessite un redémarrage complet de l'application\n\n**Q5.** Quelle est la principale différence entre Flutter et des frameworks tels que React Native ?\n- A) Flutter utilise des frameworks d'application natives\n- B) Flutter n'a besoin d'aucun framework d'application native pour créer les applications\n- C) Flutter utilise des langages de programmation différents\n- D) Flutter est compatible avec des appareils plus anciens"
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "invocation_events": [
+              {
+                "author": "RevisionOrchestrator",
+                "content": {
+                  "parts": [
+                    {
+                      "function_call": {
+                        "id": "adk-54aee881-57d7-4c8e-8fcb-a7bf2ba73ad2",
+                        "args": {
+                          "agent_name": "QuizOnlyPipeline"
+                        },
+                        "name": "transfer_to_agent"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "author": "RevisionOrchestrator",
+                "content": {
+                  "parts": [
+                    {
+                      "function_response": {
+                        "id": "adk-54aee881-57d7-4c8e-8fcb-a7bf2ba73ad2",
+                        "name": "transfer_to_agent",
+                        "response": {
+                          "result": null
+                        }
+                      }
+                    }
+                  ],
+                  "role": "user"
+                }
+              }
+            ]
+          },
+          "creation_timestamp": 1772810852.594348
+        },
+        {
+          "invocation_id": "e-fb6e462f-b6f6-43ea-bcef-b458c4058f9b",
+          "user_content": {
+            "parts": [
+              {
+                "text": "CORRECTION: Q1=A, Q2=A, Q3=A, Q4=A, Q5=A"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "## Progression\n\n**Historique :**\n- Session 1 : [██░░░] 2/5\n- Session 2 : [░░░░░] 0/5\n\n En baisse — relis la fiche !\n\n**Questions à retravailler : Q1, Q2, Q3, Q4, Q5**\n\nConseil : relis les points correspondants dans la fiche et refais le quiz.\n\n---\nTu veux : **A)** Une nouvelle fiche + quiz  ou  **B)** Refaire le quiz sur le même sujet ?"
+              }
+            ]
+          },
+          "intermediate_data": {
+            "invocation_events": [
+              {
+                "author": "RevisionOrchestrator",
+                "content": {
+                  "parts": [
+                    {
+                      "function_call": {
+                        "id": "adk-352f79fd-c019-45f1-9e36-76fba0d9dadf",
+                        "args": {
+                          "agent_name": "CorrectionPipeline"
+                        },
+                        "name": "transfer_to_agent"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "author": "RevisionOrchestrator",
+                "content": {
+                  "parts": [
+                    {
+                      "function_response": {
+                        "id": "adk-352f79fd-c019-45f1-9e36-76fba0d9dadf",
+                        "name": "transfer_to_agent",
+                        "response": {
+                          "result": null
+                        }
+                      }
+                    }
+                  ],
+                  "role": "user"
+                }
+              }
+            ]
+          },
+          "creation_timestamp": 1772810861.968628
+        }
+      ],
+      "session_input": {
+        "app_name": "my_agent",
+        "user_id": "user"
+      },
+      "creation_timestamp": 1772810873.247177
+    }
+  ],
+  "creation_timestamp": 1772810869.777596
+}
