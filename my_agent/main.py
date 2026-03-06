@@ -8,6 +8,10 @@ from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
 from google.genai.types import Content, Part
 from my_agent.agent import root_agent
+from dotenv import load_dotenv
+from pathlib import Path
+
+load_dotenv(Path(__file__).parent / ".env")
 
 APP_NAME = "revision_agent"
 USER_ID = "etudiant_01"

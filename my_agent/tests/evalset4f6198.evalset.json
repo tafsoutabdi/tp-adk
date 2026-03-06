@@ -1,0 +1,130 @@
+{
+  "eval_set_id": "evalset4f6198",
+  "name": "evalset4f6198",
+  "eval_cases": [
+    {
+      "eval_id": "case92f649",
+      "conversation": [
+        {
+          "invocation_id": "e-0ee54745-7138-492f-9c41-9bfa90811fce",
+          "user_content": {
+            "parts": [
+              {
+                "text": "flutter"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "Je vais générer un QCM de 5 questions basé sur les informations fournies.\n\n## Quiz\n\n**Q1.** Quel est le principal avantage de l'utilisation de Flutter ?\n- A) Il est exécuté uniquement sur Android.\n- B) Il permet de développer des applications mobiles multi-plateforme.\n- C) Il est écrit exclusivement en Java.\n- D) Il est seulement compatible avec les applications web.\n\n**Q2.** Quels sont les langages principaux utilisés par Flutter ?\n- A) Java et Kotlin.\n- B) Dart et les bibliothèques d'interface utilisateurs Flutter.\n- C) Python et C++.\n- D) C# et Swift.\n\n**Q3.** Comment fonctionne le langage Dart ?\n- A) Il est exécuté directement sur la machine physique.\n- B) Il repose sur la virtual machine Dart.\n- C) Il utilise uniquement l'émulation.\n- D) Il est exécuté dans le navigateur web.\n\n**Q4.** À quoi sert une application Flutter ?\n- A) Pour exécuter un seul programme sous Android.\n- B) Pour combiner différents composants pour former une application.\n- C) Pour afficher des applications uniquement sur iOS.\n- D) Pour écrire des logiques métier dans Dart.\n\n**5.** Quel est l'objectif principal de la feuille de route de Flutter ?\n- A) Augmenter le nombre de programmes réunis sous un même cadre.\n- B) Augmenter la complexité des applications.\n- C) Utiliser les plugins et intégrations pour faciliter l'expérience.\n- D) Utiliser des languages differents pour developper des applications.\n\n---\nRéponds : CORRECTION: Q1=?, Q2=?, Q3=?, Q4=?, Q5=?"
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "invocation_events": [
+              {
+                "author": "RevisionOrchestrator",
+                "content": {
+                  "parts": [
+                    {
+                      "function_call": {
+                        "id": "adk-6a8f9549-6e43-4040-98be-d27985361808",
+                        "args": {
+                          "agent_name": "FlashcardQuizPipeline"
+                        },
+                        "name": "transfer_to_agent"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "author": "RevisionOrchestrator",
+                "content": {
+                  "parts": [
+                    {
+                      "function_response": {
+                        "id": "adk-6a8f9549-6e43-4040-98be-d27985361808",
+                        "name": "transfer_to_agent",
+                        "response": {
+                          "result": null
+                        }
+                      }
+                    }
+                  ],
+                  "role": "user"
+                }
+              }
+            ]
+          },
+          "creation_timestamp": 1772808971.980103
+        },
+        {
+          "invocation_id": "e-d102648d-cc17-4640-9ac3-973c849ab4e0",
+          "user_content": {
+            "parts": [
+              {
+                "text": "CORRECTION: Q1=A, Q2=A, Q3=A, Q4=A, Q5=A"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "## Progression\n\n**Première session** — Score : 0/5\n\n**Questions à retravailler : Q1, Q2, Q3, Q4, Q5**\n\nConseil : relis les points correspondants dans la fiche et refais le quiz.\n\n---\nTu veux : **A)** Une nouvelle fiche + quiz  ou  **B)** Refaire le quiz sur le même sujet ?"
+              }
+            ]
+          },
+          "intermediate_data": {
+            "invocation_events": [
+              {
+                "author": "RevisionOrchestrator",
+                "content": {
+                  "parts": [
+                    {
+                      "function_call": {
+                        "id": "adk-9a6bf616-35fd-4d2e-9967-2f3767bda2fb",
+                        "args": {
+                          "agent_name": "CorrectionPipeline"
+                        },
+                        "name": "transfer_to_agent"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "author": "RevisionOrchestrator",
+                "content": {
+                  "parts": [
+                    {
+                      "function_response": {
+                        "id": "adk-9a6bf616-35fd-4d2e-9967-2f3767bda2fb",
+                        "name": "transfer_to_agent",
+                        "response": {
+                          "result": null
+                        }
+                      }
+                    }
+                  ],
+                  "role": "user"
+                }
+              }
+            ]
+          },
+          "creation_timestamp": 1772808979.172093
+        }
+      ],
+      "session_input": {
+        "app_name": "my_agent",
+        "user_id": "user"
+      },
+      "creation_timestamp": 1772808990.215055
+    }
+  ],
+  "creation_timestamp": 1772808984.943058
+}

@@ -1,0 +1,1300 @@
+{
+  "eval_set_result_id": "my_agent_evalset4f6198_1772809002.0870779",
+  "eval_set_result_name": "my_agent_evalset4f6198_1772809002.0870779",
+  "eval_set_id": "evalset4f6198",
+  "eval_case_results": [
+    {
+      "eval_set_file": "evalset4f6198",
+      "eval_set_id": "evalset4f6198",
+      "eval_id": "case92f649",
+      "final_eval_status": 1,
+      "eval_metric_results": null,
+      "overall_eval_metric_results": [
+        {
+          "metric_name": "tool_trajectory_avg_score",
+          "threshold": 1.0,
+          "criterion": null,
+          "custom_function_path": null,
+          "score": 1.0,
+          "eval_status": 1,
+          "details": {
+            "rubric_scores": null
+          }
+        },
+        {
+          "metric_name": "response_match_score",
+          "threshold": 0.7,
+          "criterion": null,
+          "custom_function_path": null,
+          "score": 0.7131469979296066,
+          "eval_status": 1,
+          "details": {
+            "rubric_scores": null
+          }
+        }
+      ],
+      "eval_metric_result_per_invocation": [
+        {
+          "actual_invocation": {
+            "invocation_id": "e-e207d7cc-98ef-4dbc-a2c9-d69957a9e9e2",
+            "user_content": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": null,
+                  "function_response": null,
+                  "inline_data": null,
+                  "text": "flutter",
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null
+                }
+              ],
+              "role": "user"
+            },
+            "final_response": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": null,
+                  "function_response": null,
+                  "inline_data": null,
+                  "text": "Bienvenue, QuizAgent en action !\n\nVoici ton QCM de 5 questions sur Flutter :\n\n**Q1.** Quel langage le framework Flutter utilise-t-il par défaut ?\n- A) Java\n- B) C++\n- C) Dart\n- D) Python\n\n**Q2.** Quels sont les principaux avantages de l'utilisation de Flutter ?\n- A) Faciliter la mise à l'échelle d'applications multiplateformes, offrir des performances optimales et personnaliser l'interface utilisateur\n- B) Améliorer les performances en utilisant la CPU\n- C) Offrir une conception visuelle minimaliste\n- D) Favoriser l'utilisation de widgets prédéfinit\n\n**Q3.** Quel est le nom du navigateur utilisé en Flutter pour naviguer entre les pages ?\n- A) Navigator\n- B) Router\n- C) Browser\n- D) Linker\n\n**Q4.** Quelle différence principale existe entre les Statefull et les Stateless Widgets ?\n- A) Les Statefull Widgets sont plus rapides que les Stateless Widgets\n- B) Les Statefull Widgets stockent leur état tandis que les Stateless Widgets ne le font pas\n- C) Les Statefull Widgets ne peuvent pas être utilisés sur plusieurs plateformes\n- D) Les Stateless Widgets sont plus faciles à utiliser que les Statefull Widgets\n\n**Q5.** Quelle est la capacité de Flutter en termes de plateformes ?\n- A) Capable d'exécuter du code sur une seule plateforme (iOS ou Android)\n- B) Capable d'exécuter des codes sur plusieurs plateformes (iOS, Android, Web, Desktop)\n- C) Exclusivement conçu pour Web\n- D) Exclusivement conçu pour Desktop",
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null
+                }
+              ],
+              "role": "model"
+            },
+            "intermediate_data": {
+              "invocation_events": [
+                {
+                  "author": "RevisionOrchestrator",
+                  "content": {
+                    "parts": [
+                      {
+                        "media_resolution": null,
+                        "code_execution_result": null,
+                        "executable_code": null,
+                        "file_data": null,
+                        "function_call": {
+                          "id": "adk-6200eba5-95e9-40d1-8b45-b3b82301288b",
+                          "args": {
+                            "agent_name": "FlashcardQuizPipeline"
+                          },
+                          "name": "transfer_to_agent",
+                          "partial_args": null,
+                          "will_continue": null
+                        },
+                        "function_response": null,
+                        "inline_data": null,
+                        "text": null,
+                        "thought": null,
+                        "thought_signature": null,
+                        "video_metadata": null
+                      }
+                    ],
+                    "role": null
+                  }
+                },
+                {
+                  "author": "RevisionOrchestrator",
+                  "content": {
+                    "parts": [
+                      {
+                        "media_resolution": null,
+                        "code_execution_result": null,
+                        "executable_code": null,
+                        "file_data": null,
+                        "function_call": null,
+                        "function_response": {
+                          "will_continue": null,
+                          "scheduling": null,
+                          "parts": null,
+                          "id": "adk-6200eba5-95e9-40d1-8b45-b3b82301288b",
+                          "name": "transfer_to_agent",
+                          "response": {
+                            "result": null
+                          }
+                        },
+                        "inline_data": null,
+                        "text": null,
+                        "thought": null,
+                        "thought_signature": null,
+                        "video_metadata": null
+                      }
+                    ],
+                    "role": "user"
+                  }
+                }
+              ]
+            },
+            "creation_timestamp": 1772808999.991167,
+            "rubrics": null,
+            "app_details": {
+              "agent_details": {
+                "FlashcardAgent": {
+                  "name": "FlashcardAgent",
+                  "instructions": "\nTu es un expert pédagogique. Génère UNIQUEMENT une fiche de révision sur le sujet donné.\n- Titre avec emoji\n- 8 à 12 puces : définitions, concepts clés, erreurs\n- Section \"À retenir absolument\" (3 points)\nNE génère PAS de quiz.\n\n\nYou are an agent. Your internal name is \"FlashcardAgent\". The description about you is \"Génère une fiche de révision sur le sujet demandé.\".",
+                  "tool_declarations": []
+                },
+                "QuizAgent": {
+                  "name": "QuizAgent",
+                  "instructions": "\nGénère un QCM de 5 questions basé sur la fiche précédente sans afficher les réponses.\n\n## Quiz\n\n**Q1.** [Question]\n- A) ... - B) ... - C) ... - D) ...\n\n**Q2.** [Question]\n- A) ... - B) ... - C) ... - D) ...\n\n**Q3.** [Question]\n- A) ... - B) ... - C) ... - D) ...\n\n**Q4.** [Question]\n- A) ... - B) ... - C) ... - D) ...\n\n**Q5.** [Question]\n- A) ... - B) ... - C) ... - D) ...\n\n---\nRéponds : CORRECTION: Q1=?, Q2=?, Q3=?, Q4=?, Q5=?\n\nNE montre PAS les réponses dans le quiz.\n\n\nYou are an agent. Your internal name is \"QuizAgent\". The description about you is \"Génère un QCM de 5 questions.\".",
+                  "tool_declarations": []
+                }
+              }
+            }
+          },
+          "expected_invocation": {
+            "invocation_id": "e-0ee54745-7138-492f-9c41-9bfa90811fce",
+            "user_content": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": null,
+                  "function_response": null,
+                  "inline_data": null,
+                  "text": "flutter",
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null
+                }
+              ],
+              "role": "user"
+            },
+            "final_response": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": null,
+                  "function_response": null,
+                  "inline_data": null,
+                  "text": "Je vais générer un QCM de 5 questions basé sur les informations fournies.\n\n## Quiz\n\n**Q1.** Quel est le principal avantage de l'utilisation de Flutter ?\n- A) Il est exécuté uniquement sur Android.\n- B) Il permet de développer des applications mobiles multi-plateforme.\n- C) Il est écrit exclusivement en Java.\n- D) Il est seulement compatible avec les applications web.\n\n**Q2.** Quels sont les langages principaux utilisés par Flutter ?\n- A) Java et Kotlin.\n- B) Dart et les bibliothèques d'interface utilisateurs Flutter.\n- C) Python et C++.\n- D) C# et Swift.\n\n**Q3.** Comment fonctionne le langage Dart ?\n- A) Il est exécuté directement sur la machine physique.\n- B) Il repose sur la virtual machine Dart.\n- C) Il utilise uniquement l'émulation.\n- D) Il est exécuté dans le navigateur web.\n\n**Q4.** À quoi sert une application Flutter ?\n- A) Pour exécuter un seul programme sous Android.\n- B) Pour combiner différents composants pour former une application.\n- C) Pour afficher des applications uniquement sur iOS.\n- D) Pour écrire des logiques métier dans Dart.\n\n**5.** Quel est l'objectif principal de la feuille de route de Flutter ?\n- A) Augmenter le nombre de programmes réunis sous un même cadre.\n- B) Augmenter la complexité des applications.\n- C) Utiliser les plugins et intégrations pour faciliter l'expérience.\n- D) Utiliser des languages differents pour developper des applications.\n\n---\nRéponds : CORRECTION: Q1=?, Q2=?, Q3=?, Q4=?, Q5=?",
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null
+                }
+              ],
+              "role": "model"
+            },
+            "intermediate_data": {
+              "invocation_events": [
+                {
+                  "author": "RevisionOrchestrator",
+                  "content": {
+                    "parts": [
+                      {
+                        "media_resolution": null,
+                        "code_execution_result": null,
+                        "executable_code": null,
+                        "file_data": null,
+                        "function_call": {
+                          "id": "adk-6a8f9549-6e43-4040-98be-d27985361808",
+                          "args": {
+                            "agent_name": "FlashcardQuizPipeline"
+                          },
+                          "name": "transfer_to_agent",
+                          "partial_args": null,
+                          "will_continue": null
+                        },
+                        "function_response": null,
+                        "inline_data": null,
+                        "text": null,
+                        "thought": null,
+                        "thought_signature": null,
+                        "video_metadata": null
+                      }
+                    ],
+                    "role": null
+                  }
+                },
+                {
+                  "author": "RevisionOrchestrator",
+                  "content": {
+                    "parts": [
+                      {
+                        "media_resolution": null,
+                        "code_execution_result": null,
+                        "executable_code": null,
+                        "file_data": null,
+                        "function_call": null,
+                        "function_response": {
+                          "will_continue": null,
+                          "scheduling": null,
+                          "parts": null,
+                          "id": "adk-6a8f9549-6e43-4040-98be-d27985361808",
+                          "name": "transfer_to_agent",
+                          "response": {
+                            "result": null
+                          }
+                        },
+                        "inline_data": null,
+                        "text": null,
+                        "thought": null,
+                        "thought_signature": null,
+                        "video_metadata": null
+                      }
+                    ],
+                    "role": "user"
+                  }
+                }
+              ]
+            },
+            "creation_timestamp": 1772808971.980103,
+            "rubrics": null,
+            "app_details": null
+          },
+          "eval_metric_results": [
+            {
+              "metric_name": "tool_trajectory_avg_score",
+              "threshold": 1.0,
+              "criterion": null,
+              "custom_function_path": null,
+              "score": 1.0,
+              "eval_status": 1,
+              "details": {
+                "rubric_scores": null
+              }
+            },
+            {
+              "metric_name": "response_match_score",
+              "threshold": 0.7,
+              "criterion": null,
+              "custom_function_path": null,
+              "score": 0.4739130434782608,
+              "eval_status": 2,
+              "details": {
+                "rubric_scores": null
+              }
+            }
+          ]
+        },
+        {
+          "actual_invocation": {
+            "invocation_id": "e-ad8303d3-a309-46a2-8949-763dfb880787",
+            "user_content": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": null,
+                  "function_response": null,
+                  "inline_data": null,
+                  "text": "CORRECTION: Q1=A, Q2=A, Q3=A, Q4=A, Q5=A",
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null
+                }
+              ],
+              "role": "user"
+            },
+            "final_response": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": null,
+                  "function_response": null,
+                  "inline_data": null,
+                  "text": "## Progression\n\n**Première session** — Score : 2/5\n\n**Questions à retravailler : Q1, Q4, Q5**\n\nConseil : relis les points correspondants dans la fiche et refais le quiz.\n\n---\nTu veux : **A)** Une nouvelle fiche + quiz  ou  **B)** Refaire le quiz sur le même sujet ?",
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null
+                }
+              ],
+              "role": null
+            },
+            "intermediate_data": {
+              "invocation_events": [
+                {
+                  "author": "RevisionOrchestrator",
+                  "content": {
+                    "parts": [
+                      {
+                        "media_resolution": null,
+                        "code_execution_result": null,
+                        "executable_code": null,
+                        "file_data": null,
+                        "function_call": {
+                          "id": "adk-e8dea987-6f51-4dbc-bf0b-eb2f77d0ccff",
+                          "args": {
+                            "agent_name": "CorrectionPipeline"
+                          },
+                          "name": "transfer_to_agent",
+                          "partial_args": null,
+                          "will_continue": null
+                        },
+                        "function_response": null,
+                        "inline_data": null,
+                        "text": null,
+                        "thought": null,
+                        "thought_signature": null,
+                        "video_metadata": null
+                      }
+                    ],
+                    "role": null
+                  }
+                },
+                {
+                  "author": "RevisionOrchestrator",
+                  "content": {
+                    "parts": [
+                      {
+                        "media_resolution": null,
+                        "code_execution_result": null,
+                        "executable_code": null,
+                        "file_data": null,
+                        "function_call": null,
+                        "function_response": {
+                          "will_continue": null,
+                          "scheduling": null,
+                          "parts": null,
+                          "id": "adk-e8dea987-6f51-4dbc-bf0b-eb2f77d0ccff",
+                          "name": "transfer_to_agent",
+                          "response": {
+                            "result": null
+                          }
+                        },
+                        "inline_data": null,
+                        "text": null,
+                        "thought": null,
+                        "thought_signature": null,
+                        "video_metadata": null
+                      }
+                    ],
+                    "role": "user"
+                  }
+                }
+              ]
+            },
+            "creation_timestamp": 1772809002.073893,
+            "rubrics": null,
+            "app_details": {
+              "agent_details": {}
+            }
+          },
+          "expected_invocation": {
+            "invocation_id": "e-d102648d-cc17-4640-9ac3-973c849ab4e0",
+            "user_content": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": null,
+                  "function_response": null,
+                  "inline_data": null,
+                  "text": "CORRECTION: Q1=A, Q2=A, Q3=A, Q4=A, Q5=A",
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null
+                }
+              ],
+              "role": "user"
+            },
+            "final_response": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": null,
+                  "function_response": null,
+                  "inline_data": null,
+                  "text": "## Progression\n\n**Première session** — Score : 0/5\n\n**Questions à retravailler : Q1, Q2, Q3, Q4, Q5**\n\nConseil : relis les points correspondants dans la fiche et refais le quiz.\n\n---\nTu veux : **A)** Une nouvelle fiche + quiz  ou  **B)** Refaire le quiz sur le même sujet ?",
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null
+                }
+              ],
+              "role": null
+            },
+            "intermediate_data": {
+              "invocation_events": [
+                {
+                  "author": "RevisionOrchestrator",
+                  "content": {
+                    "parts": [
+                      {
+                        "media_resolution": null,
+                        "code_execution_result": null,
+                        "executable_code": null,
+                        "file_data": null,
+                        "function_call": {
+                          "id": "adk-9a6bf616-35fd-4d2e-9967-2f3767bda2fb",
+                          "args": {
+                            "agent_name": "CorrectionPipeline"
+                          },
+                          "name": "transfer_to_agent",
+                          "partial_args": null,
+                          "will_continue": null
+                        },
+                        "function_response": null,
+                        "inline_data": null,
+                        "text": null,
+                        "thought": null,
+                        "thought_signature": null,
+                        "video_metadata": null
+                      }
+                    ],
+                    "role": null
+                  }
+                },
+                {
+                  "author": "RevisionOrchestrator",
+                  "content": {
+                    "parts": [
+                      {
+                        "media_resolution": null,
+                        "code_execution_result": null,
+                        "executable_code": null,
+                        "file_data": null,
+                        "function_call": null,
+                        "function_response": {
+                          "will_continue": null,
+                          "scheduling": null,
+                          "parts": null,
+                          "id": "adk-9a6bf616-35fd-4d2e-9967-2f3767bda2fb",
+                          "name": "transfer_to_agent",
+                          "response": {
+                            "result": null
+                          }
+                        },
+                        "inline_data": null,
+                        "text": null,
+                        "thought": null,
+                        "thought_signature": null,
+                        "video_metadata": null
+                      }
+                    ],
+                    "role": "user"
+                  }
+                }
+              ]
+            },
+            "creation_timestamp": 1772808979.172093,
+            "rubrics": null,
+            "app_details": null
+          },
+          "eval_metric_results": [
+            {
+              "metric_name": "tool_trajectory_avg_score",
+              "threshold": 1.0,
+              "criterion": null,
+              "custom_function_path": null,
+              "score": 1.0,
+              "eval_status": 1,
+              "details": {
+                "rubric_scores": null
+              }
+            },
+            {
+              "metric_name": "response_match_score",
+              "threshold": 0.7,
+              "criterion": null,
+              "custom_function_path": null,
+              "score": 0.9523809523809524,
+              "eval_status": 1,
+              "details": {
+                "rubric_scores": null
+              }
+            }
+          ]
+        }
+      ],
+      "session_id": "___eval___session___4a51a5ad-9790-4792-930c-049d0fbf3faa",
+      "session_details": {
+        "id": "___eval___session___4a51a5ad-9790-4792-930c-049d0fbf3faa",
+        "app_name": "my_agent",
+        "user_id": "user",
+        "state": {
+          "__llm_request_key__": "dd4a22ba-b617-4628-bd0d-6f950d9e3e5e",
+          "last_user_message": "CORRECTION: Q1=A, Q2=A, Q3=A, Q4=A, Q5=A",
+          "correct_answers": {
+            "Q1": "C",
+            "Q2": "A",
+            "Q3": "A",
+            "Q4": "B",
+            "Q5": "B"
+          },
+          "quiz_pret": true,
+          "score_actuel": 2,
+          "wrong_questions": [
+            "Q1",
+            "Q4",
+            "Q5"
+          ],
+          "rapport_progression": "Premiere session.",
+          "wrong_summary": "aucune",
+          "nb_sessions": 0,
+          "historique_scores": [
+            {
+              "score": 2,
+              "total": 5,
+              "wrong": [
+                "Q1",
+                "Q4",
+                "Q5"
+              ]
+            }
+          ],
+          "flashcard_content": "**Flutter 🪄**\n\n1. **Qu'est-ce que Flutter ?** : Libellé par Google, ce framework développeur d'UI (Interface Utilisateur) multiplateforme s'appuie sur le langage Dart.\n2. **Avantages de Flutter ?** : Faciliter la mise à l'échelle d'applications multiplateformes, offrir des performances optimales grâce à la GPU, permettre la personnalisation de l'interface utilisateur.\n3. **Widgets en Dart** : Les widgets en Flutter sont des composants graphiques, comme des boutons, des champs d'entrée.\n4. **Navigation entre pages** : Utiliser le `Navigator`\n5. **Statefull vs Stateless** : Statefull Widgets gardent en mémoire leur Etat, alors que Statelesss Widget ne le font pas (pas d'état stocké).\n6. **Material Design** : Thème de conception visuelle développé par Google, disponible dans Flutter.\n7. **Cross-platform** : Capacité de Flutter à exécuter des code sur plusieurs plateformes (iOS, Android, Web, Desktop).\n8. **Hot reload** : Mise à jour automatique du code en temps réel.\n9. **Gestion de la mémoire** : Flutter utilise un garbage collector, qui gère la mémoire dynamiquement.\n10. **Widgets** : Les widgets sont utilisés pour créer l'interface utilisateur dans Flutter. Les widgets peuvent être réutilisés dans l'ensemble d'une application comme une base de code commun aux autres d'une application.\n\n **À retenir absolument** :\n- Le langage Dart est le langage officiel en Flutter.\n- Ce framework est conçu pour une application multiplateforme.\n- L'interface utilisateur est basée sur les widgets en Dart.",
+          "quiz_raw": "Bienvenue, QuizAgent en action !\n\nVoici ton QCM de 5 questions sur Flutter :\n\n**Q1.** Quel langage le framework Flutter utilise-t-il par défaut ?\n- A) Java\n- B) C++\n- C) Dart\n- D) Python\n\n**Q2.** Quels sont les principaux avantages de l'utilisation de Flutter ?\n- A) Faciliter la mise à l'échelle d'applications multiplateformes, offrir des performances optimales et personnaliser l'interface utilisateur\n- B) Améliorer les performances en utilisant la CPU\n- C) Offrir une conception visuelle minimaliste\n- D) Favoriser l'utilisation de widgets prédéfinit\n\n**Q3.** Quel est le nom du navigateur utilisé en Flutter pour naviguer entre les pages ?\n- A) Navigator\n- B) Router\n- C) Browser\n- D) Linker\n\n**Q4.** Quelle différence principale existe entre les Statefull et les Stateless Widgets ?\n- A) Les Statefull Widgets sont plus rapides que les Stateless Widgets\n- B) Les Statefull Widgets stockent leur état tandis que les Stateless Widgets ne le font pas\n- C) Les Statefull Widgets ne peuvent pas être utilisés sur plusieurs plateformes\n- D) Les Stateless Widgets sont plus faciles à utiliser que les Statefull Widgets\n\n**Q5.** Quelle est la capacité de Flutter en termes de plateformes ?\n- A) Capable d'exécuter du code sur une seule plateforme (iOS ou Android)\n- B) Capable d'exécuter des codes sur plusieurs plateformes (iOS, Android, Web, Desktop)\n- C) Exclusivement conçu pour Web\n- D) Exclusivement conçu pour Desktop",
+          "correction_result": "## Corrigé\n\n❌ **Q1.** Quel langage le framework Flutter utilise-t-il par défaut ?\n   Ta réponse : **A** — Mauvaise — bonne réponse : **C**\n\n✅ **Q2.** Quels sont les principaux avantages de l'utilisation de Flutter ?\n   Ta réponse : **A** — Bonne réponse !\n\n✅ **Q3.** Quel est le nom du navigateur utilisé en Flutter pour naviguer entre les pages ?\n   Ta réponse : **A** — Bonne réponse !\n\n❌ **Q4.** Quelle différence principale existe entre les Statefull et les Stateless Widgets ?\n   Ta réponse : **A** — Mauvaise — bonne réponse : **B**\n\n❌ **Q5.** Quelle est la capacité de Flutter en termes de plateformes ?\n   Ta réponse : **A** — Mauvaise — bonne réponse : **B**\n\n---\n## 🏆 Score : 2/5 — Relis la fiche et réessaie !",
+          "progress_result": "## Progression\n\n**Première session** — Score : 2/5\n\n**Questions à retravailler : Q1, Q4, Q5**\n\nConseil : relis les points correspondants dans la fiche et refais le quiz.\n\n---\nTu veux : **A)** Une nouvelle fiche + quiz  ou  **B)** Refaire le quiz sur le même sujet ?"
+        },
+        "events": [
+          {
+            "model_version": null,
+            "content": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": null,
+                  "function_response": null,
+                  "inline_data": null,
+                  "text": "flutter",
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null
+                }
+              ],
+              "role": "user"
+            },
+            "grounding_metadata": null,
+            "partial": null,
+            "turn_complete": null,
+            "finish_reason": null,
+            "error_code": null,
+            "error_message": null,
+            "interrupted": null,
+            "custom_metadata": null,
+            "usage_metadata": null,
+            "live_session_resumption_update": null,
+            "input_transcription": null,
+            "output_transcription": null,
+            "avg_logprobs": null,
+            "logprobs_result": null,
+            "cache_metadata": null,
+            "citation_metadata": null,
+            "interaction_id": null,
+            "invocation_id": "e-e207d7cc-98ef-4dbc-a2c9-d69957a9e9e2",
+            "author": "user",
+            "actions": {
+              "skip_summarization": null,
+              "state_delta": {},
+              "artifact_delta": {},
+              "transfer_to_agent": null,
+              "escalate": null,
+              "requested_auth_configs": {},
+              "requested_tool_confirmations": {},
+              "compaction": null,
+              "end_of_agent": null,
+              "agent_state": null,
+              "rewind_before_invocation_id": null
+            },
+            "long_running_tool_ids": null,
+            "branch": null,
+            "id": "166b8cd6-308b-47cd-b8cb-614cc223f5e7",
+            "timestamp": 1772808999.982625
+          },
+          {
+            "model_version": null,
+            "content": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": {
+                    "id": "adk-6200eba5-95e9-40d1-8b45-b3b82301288b",
+                    "args": {
+                      "agent_name": "FlashcardQuizPipeline"
+                    },
+                    "name": "transfer_to_agent",
+                    "partial_args": null,
+                    "will_continue": null
+                  },
+                  "function_response": null,
+                  "inline_data": null,
+                  "text": null,
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null
+                }
+              ],
+              "role": null
+            },
+            "grounding_metadata": null,
+            "partial": null,
+            "turn_complete": null,
+            "finish_reason": null,
+            "error_code": null,
+            "error_message": null,
+            "interrupted": null,
+            "custom_metadata": null,
+            "usage_metadata": null,
+            "live_session_resumption_update": null,
+            "input_transcription": null,
+            "output_transcription": null,
+            "avg_logprobs": null,
+            "logprobs_result": null,
+            "cache_metadata": null,
+            "citation_metadata": null,
+            "interaction_id": null,
+            "invocation_id": "e-e207d7cc-98ef-4dbc-a2c9-d69957a9e9e2",
+            "author": "RevisionOrchestrator",
+            "actions": {
+              "skip_summarization": null,
+              "state_delta": {
+                "__llm_request_key__": "8123eb80-161f-4cce-8785-6e2c2bb7c000",
+                "last_user_message": "flutter"
+              },
+              "artifact_delta": {},
+              "transfer_to_agent": null,
+              "escalate": null,
+              "requested_auth_configs": {},
+              "requested_tool_confirmations": {},
+              "compaction": null,
+              "end_of_agent": null,
+              "agent_state": null,
+              "rewind_before_invocation_id": null
+            },
+            "long_running_tool_ids": [],
+            "branch": null,
+            "id": "e8d754b5-fe8b-43ef-be4e-3be26a89e906",
+            "timestamp": 1772808999.987033
+          },
+          {
+            "model_version": null,
+            "content": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": null,
+                  "function_response": {
+                    "will_continue": null,
+                    "scheduling": null,
+                    "parts": null,
+                    "id": "adk-6200eba5-95e9-40d1-8b45-b3b82301288b",
+                    "name": "transfer_to_agent",
+                    "response": {
+                      "result": null
+                    }
+                  },
+                  "inline_data": null,
+                  "text": null,
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null
+                }
+              ],
+              "role": "user"
+            },
+            "grounding_metadata": null,
+            "partial": null,
+            "turn_complete": null,
+            "finish_reason": null,
+            "error_code": null,
+            "error_message": null,
+            "interrupted": null,
+            "custom_metadata": null,
+            "usage_metadata": null,
+            "live_session_resumption_update": null,
+            "input_transcription": null,
+            "output_transcription": null,
+            "avg_logprobs": null,
+            "logprobs_result": null,
+            "cache_metadata": null,
+            "citation_metadata": null,
+            "interaction_id": null,
+            "invocation_id": "e-e207d7cc-98ef-4dbc-a2c9-d69957a9e9e2",
+            "author": "RevisionOrchestrator",
+            "actions": {
+              "skip_summarization": null,
+              "state_delta": {},
+              "artifact_delta": {},
+              "transfer_to_agent": "FlashcardQuizPipeline",
+              "escalate": null,
+              "requested_auth_configs": {},
+              "requested_tool_confirmations": {},
+              "compaction": null,
+              "end_of_agent": null,
+              "agent_state": null,
+              "rewind_before_invocation_id": null
+            },
+            "long_running_tool_ids": null,
+            "branch": null,
+            "id": "c7a0c80b-0b7a-48ec-8737-f94d92ff0336",
+            "timestamp": 1772808999.991768
+          },
+          {
+            "model_version": "llama-3.1-8b-instant",
+            "content": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": null,
+                  "function_response": null,
+                  "inline_data": null,
+                  "text": "**Flutter 🪄**\n\n1. **Qu'est-ce que Flutter ?** : Libellé par Google, ce framework développeur d'UI (Interface Utilisateur) multiplateforme s'appuie sur le langage Dart.\n2. **Avantages de Flutter ?** : Faciliter la mise à l'échelle d'applications multiplateformes, offrir des performances optimales grâce à la GPU, permettre la personnalisation de l'interface utilisateur.\n3. **Widgets en Dart** : Les widgets en Flutter sont des composants graphiques, comme des boutons, des champs d'entrée.\n4. **Navigation entre pages** : Utiliser le `Navigator`\n5. **Statefull vs Stateless** : Statefull Widgets gardent en mémoire leur Etat, alors que Statelesss Widget ne le font pas (pas d'état stocké).\n6. **Material Design** : Thème de conception visuelle développé par Google, disponible dans Flutter.\n7. **Cross-platform** : Capacité de Flutter à exécuter des code sur plusieurs plateformes (iOS, Android, Web, Desktop).\n8. **Hot reload** : Mise à jour automatique du code en temps réel.\n9. **Gestion de la mémoire** : Flutter utilise un garbage collector, qui gère la mémoire dynamiquement.\n10. **Widgets** : Les widgets sont utilisés pour créer l'interface utilisateur dans Flutter. Les widgets peuvent être réutilisés dans l'ensemble d'une application comme une base de code commun aux autres d'une application.\n\n **À retenir absolument** :\n- Le langage Dart est le langage officiel en Flutter.\n- Ce framework est conçu pour une application multiplateforme.\n- L'interface utilisateur est basée sur les widgets en Dart.",
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null
+                }
+              ],
+              "role": "model"
+            },
+            "grounding_metadata": null,
+            "partial": false,
+            "turn_complete": null,
+            "finish_reason": "STOP",
+            "error_code": null,
+            "error_message": null,
+            "interrupted": null,
+            "custom_metadata": {
+              "__llm_request_key__": "680e331b-8f13-4297-907d-4ffd7b9bb6ce"
+            },
+            "usage_metadata": {
+              "cache_tokens_details": null,
+              "cached_content_token_count": 0,
+              "candidates_token_count": 382,
+              "candidates_tokens_details": null,
+              "prompt_token_count": 172,
+              "prompt_tokens_details": null,
+              "thoughts_token_count": null,
+              "tool_use_prompt_token_count": null,
+              "tool_use_prompt_tokens_details": null,
+              "total_token_count": 554,
+              "traffic_type": null
+            },
+            "live_session_resumption_update": null,
+            "input_transcription": null,
+            "output_transcription": null,
+            "avg_logprobs": null,
+            "logprobs_result": null,
+            "cache_metadata": null,
+            "citation_metadata": null,
+            "interaction_id": null,
+            "invocation_id": "e-e207d7cc-98ef-4dbc-a2c9-d69957a9e9e2",
+            "author": "FlashcardAgent",
+            "actions": {
+              "skip_summarization": null,
+              "state_delta": {
+                "__llm_request_key__": "680e331b-8f13-4297-907d-4ffd7b9bb6ce",
+                "correct_answers": {},
+                "quiz_pret": false,
+                "score_actuel": 0,
+                "wrong_questions": [],
+                "rapport_progression": "Premiere session.",
+                "wrong_summary": "aucune",
+                "nb_sessions": 0,
+                "historique_scores": [],
+                "flashcard_content": "**Flutter 🪄**\n\n1. **Qu'est-ce que Flutter ?** : Libellé par Google, ce framework développeur d'UI (Interface Utilisateur) multiplateforme s'appuie sur le langage Dart.\n2. **Avantages de Flutter ?** : Faciliter la mise à l'échelle d'applications multiplateformes, offrir des performances optimales grâce à la GPU, permettre la personnalisation de l'interface utilisateur.\n3. **Widgets en Dart** : Les widgets en Flutter sont des composants graphiques, comme des boutons, des champs d'entrée.\n4. **Navigation entre pages** : Utiliser le `Navigator`\n5. **Statefull vs Stateless** : Statefull Widgets gardent en mémoire leur Etat, alors que Statelesss Widget ne le font pas (pas d'état stocké).\n6. **Material Design** : Thème de conception visuelle développé par Google, disponible dans Flutter.\n7. **Cross-platform** : Capacité de Flutter à exécuter des code sur plusieurs plateformes (iOS, Android, Web, Desktop).\n8. **Hot reload** : Mise à jour automatique du code en temps réel.\n9. **Gestion de la mémoire** : Flutter utilise un garbage collector, qui gère la mémoire dynamiquement.\n10. **Widgets** : Les widgets sont utilisés pour créer l'interface utilisateur dans Flutter. Les widgets peuvent être réutilisés dans l'ensemble d'une application comme une base de code commun aux autres d'une application.\n\n **À retenir absolument** :\n- Le langage Dart est le langage officiel en Flutter.\n- Ce framework est conçu pour une application multiplateforme.\n- L'interface utilisateur est basée sur les widgets en Dart."
+              },
+              "artifact_delta": {},
+              "transfer_to_agent": null,
+              "escalate": null,
+              "requested_auth_configs": {},
+              "requested_tool_confirmations": {},
+              "compaction": null,
+              "end_of_agent": null,
+              "agent_state": null,
+              "rewind_before_invocation_id": null
+            },
+            "long_running_tool_ids": null,
+            "branch": null,
+            "id": "637ef709-0e78-424a-a8c6-65952210145b",
+            "timestamp": 1772808999.996131
+          },
+          {
+            "model_version": "llama-3.1-8b-instant",
+            "content": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": null,
+                  "function_response": null,
+                  "inline_data": null,
+                  "text": "Bienvenue, QuizAgent en action !\n\nVoici ton QCM de 5 questions sur Flutter :\n\n**Q1.** Quel langage le framework Flutter utilise-t-il par défaut ?\n- A) Java\n- B) C++\n- C) Dart\n- D) Python\n\n**Q2.** Quels sont les principaux avantages de l'utilisation de Flutter ?\n- A) Faciliter la mise à l'échelle d'applications multiplateformes, offrir des performances optimales et personnaliser l'interface utilisateur\n- B) Améliorer les performances en utilisant la CPU\n- C) Offrir une conception visuelle minimaliste\n- D) Favoriser l'utilisation de widgets prédéfinit\n\n**Q3.** Quel est le nom du navigateur utilisé en Flutter pour naviguer entre les pages ?\n- A) Navigator\n- B) Router\n- C) Browser\n- D) Linker\n\n**Q4.** Quelle différence principale existe entre les Statefull et les Stateless Widgets ?\n- A) Les Statefull Widgets sont plus rapides que les Stateless Widgets\n- B) Les Statefull Widgets stockent leur état tandis que les Stateless Widgets ne le font pas\n- C) Les Statefull Widgets ne peuvent pas être utilisés sur plusieurs plateformes\n- D) Les Stateless Widgets sont plus faciles à utiliser que les Statefull Widgets\n\n**Q5.** Quelle est la capacité de Flutter en termes de plateformes ?\n- A) Capable d'exécuter du code sur une seule plateforme (iOS ou Android)\n- B) Capable d'exécuter des codes sur plusieurs plateformes (iOS, Android, Web, Desktop)\n- C) Exclusivement conçu pour Web\n- D) Exclusivement conçu pour Desktop",
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null
+                }
+              ],
+              "role": "model"
+            },
+            "grounding_metadata": null,
+            "partial": false,
+            "turn_complete": null,
+            "finish_reason": "STOP",
+            "error_code": null,
+            "error_message": null,
+            "interrupted": null,
+            "custom_metadata": {
+              "__llm_request_key__": "66893251-b87a-4b72-aa91-312db1ed9be7"
+            },
+            "usage_metadata": {
+              "cache_tokens_details": null,
+              "cached_content_token_count": 0,
+              "candidates_token_count": 387,
+              "candidates_tokens_details": null,
+              "prompt_token_count": 674,
+              "prompt_tokens_details": null,
+              "thoughts_token_count": null,
+              "tool_use_prompt_token_count": null,
+              "tool_use_prompt_tokens_details": null,
+              "total_token_count": 1061,
+              "traffic_type": null
+            },
+            "live_session_resumption_update": null,
+            "input_transcription": null,
+            "output_transcription": null,
+            "avg_logprobs": null,
+            "logprobs_result": null,
+            "cache_metadata": null,
+            "citation_metadata": null,
+            "interaction_id": null,
+            "invocation_id": "e-e207d7cc-98ef-4dbc-a2c9-d69957a9e9e2",
+            "author": "QuizAgent",
+            "actions": {
+              "skip_summarization": null,
+              "state_delta": {
+                "__llm_request_key__": "66893251-b87a-4b72-aa91-312db1ed9be7",
+                "correct_answers": {},
+                "quiz_raw": "Bienvenue, QuizAgent en action !\n\nVoici ton QCM de 5 questions sur Flutter :\n\n**Q1.** Quel langage le framework Flutter utilise-t-il par défaut ?\n- A) Java\n- B) C++\n- C) Dart\n- D) Python\n\n**Q2.** Quels sont les principaux avantages de l'utilisation de Flutter ?\n- A) Faciliter la mise à l'échelle d'applications multiplateformes, offrir des performances optimales et personnaliser l'interface utilisateur\n- B) Améliorer les performances en utilisant la CPU\n- C) Offrir une conception visuelle minimaliste\n- D) Favoriser l'utilisation de widgets prédéfinit\n\n**Q3.** Quel est le nom du navigateur utilisé en Flutter pour naviguer entre les pages ?\n- A) Navigator\n- B) Router\n- C) Browser\n- D) Linker\n\n**Q4.** Quelle différence principale existe entre les Statefull et les Stateless Widgets ?\n- A) Les Statefull Widgets sont plus rapides que les Stateless Widgets\n- B) Les Statefull Widgets stockent leur état tandis que les Stateless Widgets ne le font pas\n- C) Les Statefull Widgets ne peuvent pas être utilisés sur plusieurs plateformes\n- D) Les Stateless Widgets sont plus faciles à utiliser que les Statefull Widgets\n\n**Q5.** Quelle est la capacité de Flutter en termes de plateformes ?\n- A) Capable d'exécuter du code sur une seule plateforme (iOS ou Android)\n- B) Capable d'exécuter des codes sur plusieurs plateformes (iOS, Android, Web, Desktop)\n- C) Exclusivement conçu pour Web\n- D) Exclusivement conçu pour Desktop"
+              },
+              "artifact_delta": {},
+              "transfer_to_agent": null,
+              "escalate": null,
+              "requested_auth_configs": {},
+              "requested_tool_confirmations": {},
+              "compaction": null,
+              "end_of_agent": null,
+              "agent_state": null,
+              "rewind_before_invocation_id": null
+            },
+            "long_running_tool_ids": null,
+            "branch": null,
+            "id": "4d533d96-0b56-4b85-ae46-608703db948d",
+            "timestamp": 1772809000.891127
+          },
+          {
+            "model_version": null,
+            "content": null,
+            "grounding_metadata": null,
+            "partial": null,
+            "turn_complete": null,
+            "finish_reason": null,
+            "error_code": null,
+            "error_message": null,
+            "interrupted": null,
+            "custom_metadata": null,
+            "usage_metadata": null,
+            "live_session_resumption_update": null,
+            "input_transcription": null,
+            "output_transcription": null,
+            "avg_logprobs": null,
+            "logprobs_result": null,
+            "cache_metadata": null,
+            "citation_metadata": null,
+            "interaction_id": null,
+            "invocation_id": "e-e207d7cc-98ef-4dbc-a2c9-d69957a9e9e2",
+            "author": "QuizAgent",
+            "actions": {
+              "skip_summarization": null,
+              "state_delta": {
+                "correct_answers": {
+                  "Q1": "C",
+                  "Q2": "A",
+                  "Q3": "A",
+                  "Q4": "B",
+                  "Q5": "B"
+                },
+                "quiz_raw": "Bienvenue, QuizAgent en action !\n\nVoici ton QCM de 5 questions sur Flutter :\n\n**Q1.** Quel langage le framework Flutter utilise-t-il par défaut ?\n- A) Java\n- B) C++\n- C) Dart\n- D) Python\n\n**Q2.** Quels sont les principaux avantages de l'utilisation de Flutter ?\n- A) Faciliter la mise à l'échelle d'applications multiplateformes, offrir des performances optimales et personnaliser l'interface utilisateur\n- B) Améliorer les performances en utilisant la CPU\n- C) Offrir une conception visuelle minimaliste\n- D) Favoriser l'utilisation de widgets prédéfinit\n\n**Q3.** Quel est le nom du navigateur utilisé en Flutter pour naviguer entre les pages ?\n- A) Navigator\n- B) Router\n- C) Browser\n- D) Linker\n\n**Q4.** Quelle différence principale existe entre les Statefull et les Stateless Widgets ?\n- A) Les Statefull Widgets sont plus rapides que les Stateless Widgets\n- B) Les Statefull Widgets stockent leur état tandis que les Stateless Widgets ne le font pas\n- C) Les Statefull Widgets ne peuvent pas être utilisés sur plusieurs plateformes\n- D) Les Stateless Widgets sont plus faciles à utiliser que les Statefull Widgets\n\n**Q5.** Quelle est la capacité de Flutter en termes de plateformes ?\n- A) Capable d'exécuter du code sur une seule plateforme (iOS ou Android)\n- B) Capable d'exécuter des codes sur plusieurs plateformes (iOS, Android, Web, Desktop)\n- C) Exclusivement conçu pour Web\n- D) Exclusivement conçu pour Desktop",
+                "quiz_pret": true
+              },
+              "artifact_delta": {},
+              "transfer_to_agent": null,
+              "escalate": null,
+              "requested_auth_configs": {},
+              "requested_tool_confirmations": {},
+              "compaction": null,
+              "end_of_agent": null,
+              "agent_state": null,
+              "rewind_before_invocation_id": null
+            },
+            "long_running_tool_ids": null,
+            "branch": null,
+            "id": "d352c297-180d-4280-a688-9f65e1ac84bd",
+            "timestamp": 1772809002.057051
+          },
+          {
+            "model_version": null,
+            "content": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": null,
+                  "function_response": null,
+                  "inline_data": null,
+                  "text": "CORRECTION: Q1=A, Q2=A, Q3=A, Q4=A, Q5=A",
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null
+                }
+              ],
+              "role": "user"
+            },
+            "grounding_metadata": null,
+            "partial": null,
+            "turn_complete": null,
+            "finish_reason": null,
+            "error_code": null,
+            "error_message": null,
+            "interrupted": null,
+            "custom_metadata": null,
+            "usage_metadata": null,
+            "live_session_resumption_update": null,
+            "input_transcription": null,
+            "output_transcription": null,
+            "avg_logprobs": null,
+            "logprobs_result": null,
+            "cache_metadata": null,
+            "citation_metadata": null,
+            "interaction_id": null,
+            "invocation_id": "e-ad8303d3-a309-46a2-8949-763dfb880787",
+            "author": "user",
+            "actions": {
+              "skip_summarization": null,
+              "state_delta": {},
+              "artifact_delta": {},
+              "transfer_to_agent": null,
+              "escalate": null,
+              "requested_auth_configs": {},
+              "requested_tool_confirmations": {},
+              "compaction": null,
+              "end_of_agent": null,
+              "agent_state": null,
+              "rewind_before_invocation_id": null
+            },
+            "long_running_tool_ids": null,
+            "branch": null,
+            "id": "0ae0ac80-d030-43ae-9db8-82db2761d187",
+            "timestamp": 1772809002.06581
+          },
+          {
+            "model_version": null,
+            "content": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": {
+                    "id": "adk-e8dea987-6f51-4dbc-bf0b-eb2f77d0ccff",
+                    "args": {
+                      "agent_name": "CorrectionPipeline"
+                    },
+                    "name": "transfer_to_agent",
+                    "partial_args": null,
+                    "will_continue": null
+                  },
+                  "function_response": null,
+                  "inline_data": null,
+                  "text": null,
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null
+                }
+              ],
+              "role": null
+            },
+            "grounding_metadata": null,
+            "partial": null,
+            "turn_complete": null,
+            "finish_reason": null,
+            "error_code": null,
+            "error_message": null,
+            "interrupted": null,
+            "custom_metadata": null,
+            "usage_metadata": null,
+            "live_session_resumption_update": null,
+            "input_transcription": null,
+            "output_transcription": null,
+            "avg_logprobs": null,
+            "logprobs_result": null,
+            "cache_metadata": null,
+            "citation_metadata": null,
+            "interaction_id": null,
+            "invocation_id": "e-ad8303d3-a309-46a2-8949-763dfb880787",
+            "author": "RevisionOrchestrator",
+            "actions": {
+              "skip_summarization": null,
+              "state_delta": {
+                "__llm_request_key__": "73bf46fa-25bb-4c6b-8f97-e228ef439503",
+                "last_user_message": "CORRECTION: Q1=A, Q2=A, Q3=A, Q4=A, Q5=A"
+              },
+              "artifact_delta": {},
+              "transfer_to_agent": null,
+              "escalate": null,
+              "requested_auth_configs": {},
+              "requested_tool_confirmations": {},
+              "compaction": null,
+              "end_of_agent": null,
+              "agent_state": null,
+              "rewind_before_invocation_id": null
+            },
+            "long_running_tool_ids": [],
+            "branch": null,
+            "id": "4f9d2fc2-dcc4-4973-a032-2025246ad4db",
+            "timestamp": 1772809002.070576
+          },
+          {
+            "model_version": null,
+            "content": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": null,
+                  "function_response": {
+                    "will_continue": null,
+                    "scheduling": null,
+                    "parts": null,
+                    "id": "adk-e8dea987-6f51-4dbc-bf0b-eb2f77d0ccff",
+                    "name": "transfer_to_agent",
+                    "response": {
+                      "result": null
+                    }
+                  },
+                  "inline_data": null,
+                  "text": null,
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null
+                }
+              ],
+              "role": "user"
+            },
+            "grounding_metadata": null,
+            "partial": null,
+            "turn_complete": null,
+            "finish_reason": null,
+            "error_code": null,
+            "error_message": null,
+            "interrupted": null,
+            "custom_metadata": null,
+            "usage_metadata": null,
+            "live_session_resumption_update": null,
+            "input_transcription": null,
+            "output_transcription": null,
+            "avg_logprobs": null,
+            "logprobs_result": null,
+            "cache_metadata": null,
+            "citation_metadata": null,
+            "interaction_id": null,
+            "invocation_id": "e-ad8303d3-a309-46a2-8949-763dfb880787",
+            "author": "RevisionOrchestrator",
+            "actions": {
+              "skip_summarization": null,
+              "state_delta": {},
+              "artifact_delta": {},
+              "transfer_to_agent": "CorrectionPipeline",
+              "escalate": null,
+              "requested_auth_configs": {},
+              "requested_tool_confirmations": {},
+              "compaction": null,
+              "end_of_agent": null,
+              "agent_state": null,
+              "rewind_before_invocation_id": null
+            },
+            "long_running_tool_ids": null,
+            "branch": null,
+            "id": "b1e04128-50e4-4999-8aa2-8939665747a9",
+            "timestamp": 1772809002.074272
+          },
+          {
+            "model_version": null,
+            "content": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": null,
+                  "function_response": null,
+                  "inline_data": null,
+                  "text": "## Corrigé\n\n❌ **Q1.** Quel langage le framework Flutter utilise-t-il par défaut ?\n   Ta réponse : **A** — Mauvaise — bonne réponse : **C**\n\n✅ **Q2.** Quels sont les principaux avantages de l'utilisation de Flutter ?\n   Ta réponse : **A** — Bonne réponse !\n\n✅ **Q3.** Quel est le nom du navigateur utilisé en Flutter pour naviguer entre les pages ?\n   Ta réponse : **A** — Bonne réponse !\n\n❌ **Q4.** Quelle différence principale existe entre les Statefull et les Stateless Widgets ?\n   Ta réponse : **A** — Mauvaise — bonne réponse : **B**\n\n❌ **Q5.** Quelle est la capacité de Flutter en termes de plateformes ?\n   Ta réponse : **A** — Mauvaise — bonne réponse : **B**\n\n---\n## 🏆 Score : 2/5 — Relis la fiche et réessaie !",
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null
+                }
+              ],
+              "role": null
+            },
+            "grounding_metadata": null,
+            "partial": null,
+            "turn_complete": null,
+            "finish_reason": null,
+            "error_code": null,
+            "error_message": null,
+            "interrupted": null,
+            "custom_metadata": null,
+            "usage_metadata": null,
+            "live_session_resumption_update": null,
+            "input_transcription": null,
+            "output_transcription": null,
+            "avg_logprobs": null,
+            "logprobs_result": null,
+            "cache_metadata": null,
+            "citation_metadata": null,
+            "interaction_id": null,
+            "invocation_id": "e-ad8303d3-a309-46a2-8949-763dfb880787",
+            "author": "Correcteur",
+            "actions": {
+              "skip_summarization": null,
+              "state_delta": {
+                "__llm_request_key__": "8e1cc520-42ee-4732-a425-10700688f6ba",
+                "historique_scores": [
+                  {
+                    "score": 2,
+                    "total": 5,
+                    "wrong": [
+                      "Q1",
+                      "Q4",
+                      "Q5"
+                    ]
+                  }
+                ],
+                "score_actuel": 2,
+                "wrong_questions": [
+                  "Q1",
+                  "Q4",
+                  "Q5"
+                ],
+                "correction_result": "## Corrigé\n\n❌ **Q1.** Quel langage le framework Flutter utilise-t-il par défaut ?\n   Ta réponse : **A** — Mauvaise — bonne réponse : **C**\n\n✅ **Q2.** Quels sont les principaux avantages de l'utilisation de Flutter ?\n   Ta réponse : **A** — Bonne réponse !\n\n✅ **Q3.** Quel est le nom du navigateur utilisé en Flutter pour naviguer entre les pages ?\n   Ta réponse : **A** — Bonne réponse !\n\n❌ **Q4.** Quelle différence principale existe entre les Statefull et les Stateless Widgets ?\n   Ta réponse : **A** — Mauvaise — bonne réponse : **B**\n\n❌ **Q5.** Quelle est la capacité de Flutter en termes de plateformes ?\n   Ta réponse : **A** — Mauvaise — bonne réponse : **B**\n\n---\n## 🏆 Score : 2/5 — Relis la fiche et réessaie !"
+              },
+              "artifact_delta": {},
+              "transfer_to_agent": null,
+              "escalate": null,
+              "requested_auth_configs": {},
+              "requested_tool_confirmations": {},
+              "compaction": null,
+              "end_of_agent": null,
+              "agent_state": null,
+              "rewind_before_invocation_id": null
+            },
+            "long_running_tool_ids": null,
+            "branch": null,
+            "id": "5850ba8b-5eee-4993-810e-650ea3422037",
+            "timestamp": 1772809002.077145
+          },
+          {
+            "model_version": null,
+            "content": {
+              "parts": [
+                {
+                  "media_resolution": null,
+                  "code_execution_result": null,
+                  "executable_code": null,
+                  "file_data": null,
+                  "function_call": null,
+                  "function_response": null,
+                  "inline_data": null,
+                  "text": "## Progression\n\n**Première session** — Score : 2/5\n\n**Questions à retravailler : Q1, Q4, Q5**\n\nConseil : relis les points correspondants dans la fiche et refais le quiz.\n\n---\nTu veux : **A)** Une nouvelle fiche + quiz  ou  **B)** Refaire le quiz sur le même sujet ?",
+                  "thought": null,
+                  "thought_signature": null,
+                  "video_metadata": null
+                }
+              ],
+              "role": null
+            },
+            "grounding_metadata": null,
+            "partial": null,
+            "turn_complete": null,
+            "finish_reason": null,
+            "error_code": null,
+            "error_message": null,
+            "interrupted": null,
+            "custom_metadata": null,
+            "usage_metadata": null,
+            "live_session_resumption_update": null,
+            "input_transcription": null,
+            "output_transcription": null,
+            "avg_logprobs": null,
+            "logprobs_result": null,
+            "cache_metadata": null,
+            "citation_metadata": null,
+            "interaction_id": null,
+            "invocation_id": "e-ad8303d3-a309-46a2-8949-763dfb880787",
+            "author": "ProgressAgent",
+            "actions": {
+              "skip_summarization": null,
+              "state_delta": {
+                "__llm_request_key__": "dd4a22ba-b617-4628-bd0d-6f950d9e3e5e",
+                "progress_result": "## Progression\n\n**Première session** — Score : 2/5\n\n**Questions à retravailler : Q1, Q4, Q5**\n\nConseil : relis les points correspondants dans la fiche et refais le quiz.\n\n---\nTu veux : **A)** Une nouvelle fiche + quiz  ou  **B)** Refaire le quiz sur le même sujet ?"
+              },
+              "artifact_delta": {},
+              "transfer_to_agent": null,
+              "escalate": null,
+              "requested_auth_configs": {},
+              "requested_tool_confirmations": {},
+              "compaction": null,
+              "end_of_agent": null,
+              "agent_state": null,
+              "rewind_before_invocation_id": null
+            },
+            "long_running_tool_ids": null,
+            "branch": null,
+            "id": "5b254c76-c52e-4478-983c-9f466b4f78b7",
+            "timestamp": 1772809002.07952
+          }
+        ],
+        "last_update_time": 1772809002.07952
+      },
+      "user_id": "user"
+    }
+  ],
+  "creation_timestamp": 1772809002.0870779
+}

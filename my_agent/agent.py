@@ -1,5 +1,6 @@
 """
 Systeme de revision multi-agents - Google ADK
+(callbacks refactorisés — logique métier déléguée à my_tools.py)
 """
 
 import re
@@ -10,45 +11,46 @@ from google.adk.agents.callback_context import CallbackContext
 from google.adk.models.llm_response import LlmResponse
 from google.genai.types import Content, Part, FunctionCall
 from google.adk.tools import agent_tool
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from my_agent.tools.my_tools import calculer_score, enregistrer_reponses, sauvegarder_reponses_correctes
-
 MODEL = "groq/llama-3.1-8b-instant"
 
 
-# CALLBACKS
+# ── CALLBACKS ──────────────────────────────────────────────────────────────────
 
 def before_flashcard_callback(callback_context: CallbackContext, **kwargs) -> None:
-    """before_model_callback : initialise le state au debut de chaque session."""
+    """Initialise le state au début de chaque session."""
     s = callback_context.state
-    s["correct_answers"]    = {}
-    s["quiz_pret"]          = False
-    s["score_actuel"]       = 0
-    s["wrong_questions"]    = []
+    s["correct_answers"]     = {}
+    s["quiz_pret"]           = False
+    s["score_actuel"]        = 0
+    s["wrong_questions"]     = []
     s["rapport_progression"] = "Premiere session."
-    s["wrong_summary"]      = "aucune"
-    s["nb_sessions"]        = len(s.get("historique_scores", []))
+    s["wrong_summary"]       = "aucune"
+    s["nb_sessions"]         = len(s.get("historique_scores", []))
     if "historique_scores" not in s:
         s["historique_scores"] = []
-    print("\n[CALLBACK] State initialise")
+    print("\n[CALLBACK] State initialisé")
 
 
 def before_quiz_callback(callback_context: CallbackContext, **kwargs) -> None:
     """
-    before_model_callback : appelle le LLM separement pour obtenir les reponses
-    AVANT que le quiz soit genere. Les reponses ne seront jamais dans l'output.
+    Appelle le LLM séparément pour obtenir les réponses AVANT que le quiz soit
+    généré — elles ne figureront jamais dans l'output visible.
     """
     callback_context.state["correct_answers"] = {}
     flashcard = callback_context.state.get("flashcard_content", "")
     if not flashcard:
         print("\n[before_quiz] pas de flashcard")
         return
-    print("\n[before_quiz] extraction des reponses avant generation...")
+    print("\n[before_quiz] extraction des réponses avant génération…")
     try:
         api_key = os.environ.get("GROQ_API_KEY", "")
         prompt = (
-            "Tu vas creer un QCM de 5 questions sur ce contenu. "
-            "Avant de le rediger, indique les bonnes reponses. "
-            "Reponds UNIQUEMENT avec ce format exact, rien d autre :\n"
+            "Tu vas créer un QCM de 5 questions sur ce contenu. "
+            "Avant de le rédiger, indique les bonnes réponses. "
+            "Réponds UNIQUEMENT avec ce format exact, rien d'autre :\n"
             "Q1=X Q2=X Q3=X Q4=X Q5=X\n\n"
             f"Contenu :\n{flashcard}"
         )
@@ -61,106 +63,40 @@ def before_quiz_callback(callback_context: CallbackContext, **kwargs) -> None:
                 "max_tokens": 30,
                 "temperature": 0,
             },
-            timeout=10
+            timeout=10,
         )
         text = resp.json()["choices"][0]["message"]["content"].strip()
         print(f"\n[before_quiz] LLM: '{text}'")
         m = re.search(
             r"Q1=([A-D])\s+Q2=([A-D])\s+Q3=([A-D])\s+Q4=([A-D])\s+Q5=([A-D])",
-            text, re.IGNORECASE
+            text, re.IGNORECASE,
         )
         if m:
             answers = {f"Q{i+1}": m.group(i+1).upper() for i in range(5)}
             callback_context.state["correct_answers"] = answers
-            print(f"\n[before_quiz] Reponses : {answers}")
+            print(f"\n[before_quiz] Réponses : {answers}")
         else:
-            print(f"\n[before_quiz] Pattern non trouve: '{text}'")
+            print(f"\n[before_quiz] Pattern non trouvé: '{text}'")
     except Exception as e:
         print(f"\n[before_quiz] Erreur : {e}")
 
 
 def after_quiz_callback(callback_context: CallbackContext) -> None:
     """
-    after_agent_callback : extrait les bonnes reponses depuis quiz_raw.
-    Essaie plusieurs patterns. Fallback sur un appel LLM dedie si necessaire.
+    Extrait les bonnes réponses depuis quiz_raw via `sauvegarder_reponses_correctes`.
     """
     quiz_raw = callback_context.state.get("quiz_raw", "")
     print(f"\n[after_quiz] {len(quiz_raw)} chars")
-    print(f"\n[after_quiz] fin:\n{quiz_raw[-300:]}")
 
-    answers = {}
-
-    # Pattern 1 : REPONSES_CACHEES: Q1=C Q2=B Q3=B Q4=C Q5=B
-    p1 = re.search(
-        r'REPONSES_CACHEES\s*:\s*Q1=([A-D])\s+Q2=([A-D])\s+Q3=([A-D])\s+Q4=([A-D])\s+Q5=([A-D])',
-        quiz_raw, re.IGNORECASE
-    )
-    if p1:
-        answers = {f"Q{i+1}": p1.group(i+1).upper() for i in range(5)}
-        print(f"\n[after_quiz] Pattern 1 OK : {answers}")
-        clean = re.sub(r'[^\n]*REPONSES_CACHEES[^\n]*\n?', '', quiz_raw, flags=re.IGNORECASE)
-        clean = re.sub(r'[^\n]*Ligne\s+1[^\n]*\n?', '', clean, flags=re.IGNORECASE)
-        callback_context.state["quiz_raw"] = clean.strip()
-
-    # Pattern 2 : Q1=C, Q2=B, Q3=B sur une ligne
-    if not answers:
-        p2 = re.search(
-            r'Q1\s*=\s*([A-D])[,\s]+Q2\s*=\s*([A-D])[,\s]+Q3\s*=\s*([A-D])[,\s]+Q4\s*=\s*([A-D])[,\s]+Q5\s*=\s*([A-D])',
-            quiz_raw, re.IGNORECASE
-        )
-        if p2:
-            answers = {f"Q{i+1}": p2.group(i+1).upper() for i in range(5)}
-            print(f"\n[after_quiz] Pattern 2 OK : {answers}")
-            clean = re.sub(r'[^\n]*Q1\s*=\s*[A-D][^\n]*\n?', '', quiz_raw, flags=re.IGNORECASE)
-            callback_context.state["quiz_raw"] = clean.strip()
-
-    # Pattern 3 : "Reponse : X" apres chaque question
-    if not answers:
-        reps = re.findall(r'R[ée]ponse\s*(?:correcte)?\s*:\s*([A-D])', quiz_raw, re.IGNORECASE)
-        if len(reps) == 5:
-            answers = {f"Q{i+1}": r.upper() for i, r in enumerate(reps)}
-            print(f"\n[after_quiz] Pattern 3 OK : {answers}")
-            clean = re.sub(r'[^\n]*R[ée]ponse[^\n]*\n?', '', quiz_raw, flags=re.IGNORECASE)
-            callback_context.state["quiz_raw"] = clean.strip()
-
-    # Fallback : appel LLM Groq dedie avec temperature=0
-    if not answers:
-        print(f"\n[after_quiz] Aucun pattern — fallback LLM")
-        try:
-            api_key = os.environ.get("GROQ_API_KEY", "")
-            prompt = (
-                "Lis ce quiz et identifie la bonne reponse pour chaque question.\n"
-                "Reponds UNIQUEMENT avec ce format exact, rien d'autre :\n"
-                "Q1=X Q2=X Q3=X Q4=X Q5=X\n\n"
-                f"Quiz :\n{quiz_raw}"
-            )
-            resp = requests.post(
-                "https://api.groq.com/openai/v1/chat/completions",
-                headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-                json={
-                    "model": "llama-3.1-8b-instant",
-                    "messages": [{"role": "user", "content": prompt}],
-                    "max_tokens": 30,
-                    "temperature": 0,
-                },
-                timeout=10
-            )
-            text = resp.json()["choices"][0]["message"]["content"].strip()
-            print(f"\n[after_quiz] LLM dit: '{text}'")
-            m = re.search(
-                r'Q1=([A-D])\s+Q2=([A-D])\s+Q3=([A-D])\s+Q4=([A-D])\s+Q5=([A-D])',
-                text, re.IGNORECASE
-            )
-            if m:
-                answers = {f"Q{i+1}": m.group(i+1).upper() for i in range(5)}
-                print(f"\n[after_quiz] Fallback OK : {answers}")
-        except Exception as e:
-            print(f"\n[after_quiz] Erreur fallback : {e}")
+    # ── délégation à my_tools ──
+    answers, clean = sauvegarder_reponses_correctes(quiz_raw)
 
     if answers:
         callback_context.state["correct_answers"] = answers
+        callback_context.state["quiz_raw"]        = clean
+        print(f"\n[after_quiz] Réponses : {answers}")
     else:
-        print(f"\n[after_quiz] ECHEC TOTAL")
+        print(f"\n[after_quiz] ÉCHEC TOTAL")
 
     callback_context.state["quiz_pret"] = True
 
@@ -176,7 +112,7 @@ def root_router(callback_context: CallbackContext, **kwargs) -> LlmResponse | No
         for event in reversed(events):
             if event.author == "user" and event.content:
                 for part in event.content.parts:
-                    if hasattr(part, 'text') and part.text:
+                    if hasattr(part, "text") and part.text:
                         msg = part.text.strip()
                         break
                 if msg:
@@ -197,7 +133,7 @@ def root_router(callback_context: CallbackContext, **kwargs) -> LlmResponse | No
         return LlmResponse(
             content=Content(parts=[Part(function_call=FunctionCall(
                 name="transfer_to_agent",
-                args={"agent_name": agent_name}
+                args={"agent_name": agent_name},
             ))])
         )
     except Exception as e:
@@ -207,8 +143,9 @@ def root_router(callback_context: CallbackContext, **kwargs) -> LlmResponse | No
 
 def before_correcteur_callback(callback_context: CallbackContext, **kwargs) -> LlmResponse | None:
     """
-    before_model_callback — calcule le score en Python pur.
-    Le LLM du Correcteur n'est JAMAIS appele.
+    before_model_callback — calcule le score en Python pur via `calculer_score`
+    et persiste via `enregistrer_reponses`.
+    Le LLM du Correcteur n'est JAMAIS appelé.
     """
     correct_answers = callback_context.state.get("correct_answers", {})
     quiz_raw        = callback_context.state.get("quiz_raw", "")
@@ -216,65 +153,28 @@ def before_correcteur_callback(callback_context: CallbackContext, **kwargs) -> L
 
     print(f"\n[CORRECTEUR] correct={correct_answers} | user='{user_msg[:50]}'")
 
-    if not correct_answers:
-        return LlmResponse(content=Content(parts=[Part(text="Aucun quiz en cours. Envoie un sujet pour commencer.")]))
+    # ── délégation à my_tools ──
+    result = calculer_score(user_msg, correct_answers, quiz_raw)
 
-    matches = re.findall(r'Q(\d+)\s*=\s*([A-Da-d])', user_msg, re.IGNORECASE)
-    if not matches:
-        return LlmResponse(content=Content(parts=[Part(text="Format invalide. Utilise : CORRECTION: Q1=A, Q2=B, Q3=C, Q4=D, Q5=A")]))
+    if not result["valid"]:
+        return LlmResponse(content=Content(parts=[Part(text=result["error_message"])]))
 
-    user_answers = {f"Q{n}": l.upper() for n, l in matches}
+    # Persistance dans le state
+    enregistrer_reponses(callback_context.state, result["score"], result["wrong"])
 
-    # Extraire les intitules de questions
-    question_texts = {}
-    for num, text in re.findall(r'\*\*Q(\d+)\.\*\*\s*(.+?)(?=\n-|\n\*|\Z)', quiz_raw, re.DOTALL):
-        question_texts[f"Q{num}"] = text.strip()
+    # Construction du message de sortie
+    output  = "## Corrigé\n\n"
+    output += "\n\n".join(result["lines"])
+    output += f"\n\n---\n## 🏆 Score : {result['score']}/5 — {result['encouragement']}"
 
-    score = 0
-    wrong = []
-    lines = []
-    for i in range(1, 6):
-        q       = f"Q{i}"
-        user    = user_answers.get(q, "?")
-        correct = correct_answers.get(q, "?")
-        ok      = (user == correct)
-        if ok:
-            score += 1
-        else:
-            wrong.append(q)
-        emoji   = "✅" if ok else "❌"
-        verdict = "Bonne reponse !" if ok else f"Mauvaise — bonne reponse : **{correct}**"
-        q_text  = question_texts.get(q, f"Question {i}")
-        lines.append(f"{emoji} **{q}.** {q_text}\n   Ta reponse : **{user}** — {verdict}")
-
-    if score == 5:
-        encouragement = " Parfait ! Score maximum !"
-    elif score >= 4:
-        encouragement = " Excellent, presque parfait !"
-    elif score >= 3:
-        encouragement = " Bien joue, encore un effort !"
-    else:
-        encouragement = " Relis la fiche et reessaie !"
-
-    # Stocker pour ProgressAgent
-    historique = callback_context.state.get("historique_scores", [])
-    historique.append({"score": score, "total": 5, "wrong": wrong})
-    callback_context.state["historique_scores"] = historique
-    callback_context.state["score_actuel"]      = score
-    callback_context.state["wrong_questions"]   = wrong
-
-    result  = "##  Corrige\n\n"
-    result += "\n\n".join(lines)
-    result += f"\n\n---\n## 🏆 Score : {score}/5 — {encouragement}"
-
-    print(f"\n[CORRECTEUR] Score : {score}/5 | Ratees : {wrong}")
-    return LlmResponse(content=Content(parts=[Part(text=result)]))
+    print(f"\n[CORRECTEUR] Score : {result['score']}/5 | Ratées : {result['wrong']}")
+    return LlmResponse(content=Content(parts=[Part(text=output)]))
 
 
 def before_progress_callback(callback_context: CallbackContext, **kwargs) -> LlmResponse | None:
     """
-    before_model_callback — construit le rapport en Python pur.
-    Le LLM du ProgressAgent n'est JAMAIS appele.
+    before_model_callback — construit le rapport de progression en Python pur.
+    Le LLM du ProgressAgent n'est JAMAIS appelé.
     """
     historique   = callback_context.state.get("historique_scores", [])
     score_actuel = callback_context.state.get("score_actuel", 0)
@@ -282,7 +182,7 @@ def before_progress_callback(callback_context: CallbackContext, **kwargs) -> Llm
 
     print(f"\n[PROGRESS] historique={historique} | wrong={wrong}")
 
-    rapport = "##  Progression\n\n"
+    rapport = "## Progression\n\n"
 
     if len(historique) > 1:
         rapport += "**Historique :**\n"
@@ -297,35 +197,35 @@ def before_progress_callback(callback_context: CallbackContext, **kwargs) -> Llm
         else:
             rapport += "\n Stable\n\n"
     elif len(historique) == 1:
-        rapport += f"**Premiere session** — Score : {score_actuel}/5\n\n"
+        rapport += f"**Première session** — Score : {score_actuel}/5\n\n"
     else:
-        rapport += "**Aucune correction effectuee.**\n\n"
+        rapport += "**Aucune correction effectuée.**\n\n"
 
     if wrong:
-        rapport += f"**Questions a retravailler : {', '.join(wrong)}**\n\n"
+        rapport += f"**Questions à retravailler : {', '.join(wrong)}**\n\n"
         rapport += "Conseil : relis les points correspondants dans la fiche et refais le quiz.\n\n"
-    elif len(historique) > 0:
-        rapport += "**Toutes les questions reussies !**\n\n"
-        rapport += "Bravo ! Tu maitrises ce sujet.\n\n"
+    elif historique:
+        rapport += "**Toutes les questions réussies !**\n\n"
+        rapport += "Bravo ! Tu maîtrises ce sujet.\n\n"
 
-    rapport += "---\n Tu veux : **A)** Une nouvelle fiche + quiz  ou  **B)** Refaire le quiz sur le meme sujet ?"
+    rapport += "---\nTu veux : **A)** Une nouvelle fiche + quiz  ou  **B)** Refaire le quiz sur le même sujet ?"
 
-    print(f"\n[PROGRESS] rapport genere ({len(historique)} sessions)")
+    print(f"\n[PROGRESS] rapport généré ({len(historique)} sessions)")
     return LlmResponse(content=Content(parts=[Part(text=rapport)]))
 
 
-# AGENTS
+# ── AGENTS ─────────────────────────────────────────────────────────────────────
 
 flashcard_agent = LlmAgent(
     name="FlashcardAgent",
     model=MODEL,
-    description="Genere une fiche de revision sur le sujet demande.",
+    description="Génère une fiche de révision sur le sujet demandé.",
     instruction="""
-Tu es un expert pedagogique. Genere UNIQUEMENT une fiche de revision sur le sujet donne.
+Tu es un expert pédagogique. Génère UNIQUEMENT une fiche de révision sur le sujet donné.
 - Titre avec emoji
-- 8 a 12 puces : definitions, concepts cles, erreurs
-- Section "A retenir absolument" (3 points)
-NE genere PAS de quiz.
+- 8 à 12 puces : définitions, concepts clés, erreurs
+- Section "À retenir absolument" (3 points)
+NE génère PAS de quiz.
 """,
     output_key="flashcard_content",
     before_model_callback=before_flashcard_callback,
@@ -334,11 +234,11 @@ NE genere PAS de quiz.
 quiz_agent = LlmAgent(
     name="QuizAgent",
     model=MODEL,
-    description="Genere un QCM de 5 questions.",
+    description="Génère un QCM de 5 questions.",
     instruction="""
-Genere un QCM de 5 questions base sur la fiche precedente.
+Génère un QCM de 5 questions basé sur la fiche précédente sans afficher les réponses.
 
-##  Quiz
+## Quiz
 
 **Q1.** [Question]
 - A) ... - B) ... - C) ... - D) ...
@@ -356,9 +256,9 @@ Genere un QCM de 5 questions base sur la fiche precedente.
 - A) ... - B) ... - C) ... - D) ...
 
 ---
-Reponds : CORRECTION: Q1=?, Q2=?, Q3=?, Q4=?, Q5=?
+Réponds : CORRECTION: Q1=?, Q2=?, Q3=?, Q4=?, Q5=?
 
-NE montre PAS les reponses dans le quiz.
+NE montre PAS les réponses dans le quiz.
 """,
     output_key="quiz_raw",
     before_model_callback=before_quiz_callback,
@@ -368,11 +268,11 @@ NE montre PAS les reponses dans le quiz.
 correcteur_agent = LlmAgent(
     name="Correcteur",
     model=MODEL,
-    description="Corrige les reponses.",
+    description="Corrige les réponses.",
     include_contents="none",
     disallow_transfer_to_parent=True,
     disallow_transfer_to_peers=True,
-    instruction="Affiche le corrige.",
+    instruction="Affiche le corrigé.",
     output_key="correction_result",
     before_model_callback=before_correcteur_callback,
 )
@@ -389,39 +289,36 @@ progress_agent = LlmAgent(
     before_model_callback=before_progress_callback,
 )
 
-# ConseilAgent via AgentTool (contrainte 5 du TP)
+# ConseilAgent via AgentTool
 conseil_agent = LlmAgent(
     name="ConseilAgent",
     model=MODEL,
-    description="Donne des conseils de methode de revision.",
+    description="Donne des conseils de méthode de révision.",
     include_contents="none",
     instruction="""
-Score : {score_actuel}/5 | Questions ratees : {wrong_summary}
-Donne 3 conseils de methode d'apprentissage adaptes en 4 lignes max.
+Score : {score_actuel}/5 | Questions ratées : {wrong_summary}
+Donne 3 conseils de méthode d'apprentissage adaptés en 4 lignes max.
 """,
     output_key="conseil_result",
 )
 conseil_tool = agent_tool.AgentTool(agent=conseil_agent)
 
 
-# PIPELINES
+# ── PIPELINES ──────────────────────────────────────────────────────────────────
 
-# Pipeline complet : nouvelle fiche + quiz
 flashcard_quiz_pipeline = SequentialAgent(
     name="FlashcardQuizPipeline",
-    description="Genere la fiche puis le quiz.",
+    description="Génère la fiche puis le quiz.",
     sub_agents=[flashcard_agent, quiz_agent],
 )
 
-# Deuxieme instance du QuizAgent pour QuizOnlyPipeline
-# (un agent ne peut avoir qu'un seul parent dans ADK)
 quiz_agent_retry = LlmAgent(
     name="QuizAgentRetry",
     model=MODEL,
-    description="Regenere un nouveau quiz sur la meme fiche.",
+    description="Régénère un nouveau quiz sur la même fiche.",
     instruction="""
-Genere un QCM de 5 NOUVELLES questions base sur la fiche precedente.
-Les questions doivent etre differentes du quiz precedent.
+Génère un QCM de 5 NOUVELLES questions basé sur la fiche précédente.
+Les questions doivent être différentes du quiz précédent et ne pas révéler les réponses.
 
 ## Nouveau Quiz
 
@@ -441,19 +338,18 @@ Les questions doivent etre differentes du quiz precedent.
 - A) ... - B) ... - C) ... - D) ...
 
 ---
-Reponds : CORRECTION: Q1=?, Q2=?, Q3=?, Q4=?, Q5=?
+Réponds : CORRECTION: Q1=?, Q2=?, Q3=?, Q4=?, Q5=?
 
-NE montre PAS les reponses dans le quiz.
+NE montre PAS les réponses dans le quiz.
 """,
     output_key="quiz_raw",
     before_model_callback=before_quiz_callback,
     after_agent_callback=after_quiz_callback,
 )
 
-# Pipeline quiz seul : refaire le quiz sur le meme sujet (sans regenerer la fiche)
 quiz_only_pipeline = SequentialAgent(
     name="QuizOnlyPipeline",
-    description="Regenere uniquement le quiz sur la fiche existante.",
+    description="Régénère uniquement le quiz sur la fiche existante.",
     sub_agents=[quiz_agent_retry],
 )
 
@@ -464,7 +360,7 @@ correction_pipeline = SequentialAgent(
 )
 
 
-# ROOT AGENT
+# ── ROOT AGENT ─────────────────────────────────────────────────────────────────
 
 root_agent = LlmAgent(
     name="RevisionOrchestrator",
