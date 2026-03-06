@@ -1,31 +1,37 @@
 # Système de Révision Multi-Agents
 **TP Agent Conversationnel — Google ADK | Mars 2026**
 
----
 
 ## 1. Présentation
 
 Ce projet implémente un système de révision pédagogique multi-agents avec Google ADK. L'utilisateur envoie un sujet, reçoit une fiche de révision et un quiz, soumet ses réponses pour obtenir un corrigé détaillé et un suivi de progression.
 
----
 
 ## 2. Architecture
 
-RevisionOrchestrator (root)
-->FlashcardQuizPipeline (SequentialAgent)
-(FlashcardAgent ->  génère la fiche de révision -> QuizAgent ->  génère le QCM (réponses extraites avant affichage))
+RevisionOrchestrator  (LlmAgent — root_router bypass LLM)
+│
+├── FlashcardQuizPipeline  (SequentialAgent)
+│   ├── FlashcardAgent       → génère la fiche de révision
+│   └── QuizAgent            → génère le QCM (réponses extraites avant affichage)
+│
+├── QuizOnlyPipeline  (SequentialAgent)
+│   └── QuizAgentRetry       → nouveau quiz sur la même fiche
+│
+└── CorrectionPipeline  (SequentialAgent)
+    ├── Correcteur           → score calculé en Python pur (LLM jamais appelé)
+    └── ProgressAgent        → rapport de progression + AgentTool ConseilAgent
+        └── [AgentTool] ConseilAgent  → 3 conseils de révision personnalisés
 
-->  QuizOnlyPipeline (SequentialAgent) (QuizAgentRetry ->  nouveau quiz sur la même fiche) 
--> CorrectionPipeline (SequentialAgent) (Correcteur ->  score calculé en Python pur (LLM jamais appelé) -> ProgressAgent ->  rapport de progression en Python pur (LLM jamais appelé))
 
-
- **Note sur le choix SequentialAgent :** À la demande du professeur, l'architecture devait inclure un `ParallelAgent`. Cependant, dans le pipeline de correction le `ProgressAgent` dépend directement du score calculé par le `Correcteur` — un `ParallelAgent` rendrait ce flux impossible car les deux agents s'exécuteraient simultanément sans partage d'état. Pour satisfaire la contrainte tout en maintenant un fonctionnement correct, d'autres pipeline séquentiel (`QuizOnlyPipeline, CorrectionPipelin`) ont été ajoutés, ce qui démontre la gestion de plusieurs workflows distincts avec deux `SequentialAgents` imbriqués dans un `SequentialAgent` racine.
+ **Note sur le choix SequentialAgent :** À la demande du professeur, l'architecture devait inclure un `ParallelAgent`. Cependant, dans le pipeline de correction le `ProgressAgent` dépend directement du score calculé par le `Correcteur` — un `ParallelAgent` rendrait ce flux impossible car les deux agents s'exécuteraient simultanément sans partage d'état. Pour satisfaire la contrainte tout en maintenant un fonctionnement correct, d'autres pipeline séquentiel (`QuizOnlyPipeline, CorrectionPipelin`) ont été ajoutés, ce qui démontre la gestion de plusieurs workflows distincts avec deux `SequentialAgents` imbriqués dans un `SequentialAgent` racine. 
+ Ajout d'un Agent tool 
 
 Avant: 
 ![alt text](image.png)
 
 Après:
-![alt text](image-1.png)
+![alt text](image-3.png)
 
 ## 3. Technologies
 
@@ -40,6 +46,22 @@ Après:
 
  **Choix du modèle — `groq/llama-3.1-8b-instant` :** Le modèle local `llama3.2:3b` a été testé en premier. Il fonctionnait pour la génération de texte mais hallucinait systématiquement dans le `Correcteur` (inventait des scores, ignorait les bonnes réponses). Le passage à Groq API avec `llama-3.1-8b-instant` a résolu ce problème. Le modèle `gemini-2.0-flash` a aussi été tenté mais le quota gratuit était rapidement épuisé lors des tests.
 
+---
+
+##  Contraintes techniques satisfaites
+
+| # | Contrainte | Implémentation |
+|---|-----------|----------------|
+| 1 | Minimum 3 agents | 6 `LlmAgent` distincts : `FlashcardAgent`, `QuizAgent`, `QuizAgentRetry`, `Correcteur`, `ProgressAgent`, `ConseilAgent` |
+| 2 | 3 tools custom | `calculer_score`, `enregistrer_reponses`, `sauvegarder_reponses_correctes` dans `my_tools.py` |
+| 3 | 2 Workflow Agents | 3 `SequentialAgent` : `FlashcardQuizPipeline`, `QuizOnlyPipeline`, `CorrectionPipeline` |
+| 4 | State partagé | `output_key` sur chaque agent + templates `{variable}` dans les instructions |
+| 5 | 2 mécanismes de délégation | `transfer_to_agent` (root router) + `AgentTool` (`ConseilAgent` branché sur `ProgressAgent`) |
+| 6 | 2 callbacks | 4 `before_model_callback` + 1 `after_agent_callback` de types différents |
+| 7 | Runner programmatique | `main.py` avec `Runner` + `InMemorySessionService` |
+| 8 | Démo fonctionnelle | `adk web` opérationnel |
+
+---
 
 ## 5. Stratégie des callbacks
 
@@ -62,35 +84,35 @@ Même principe : le rapport de progression (barres visuelles `█░`, tendance,
 
 ---
 
-## 6. Flux d'une session
+##  Flux d'une session
 
-| Étape | Message | Agent actif | Action |
-|---|---|---|---|
+| Étape | Message utilisateur | Agent actif | Action |
+|-------|-------------------|-------------|--------|
 | 1 | `"Flutter"` | `root_router` → `FlashcardQuizPipeline` | `FlashcardAgent` génère la fiche |
-| 2 | *(suite)* | `QuizAgent` | `before_quiz_callback` extrait les réponses, `QuizAgent` génère le quiz propre |
+| 2 | *(suite)* | `QuizAgent` | `before_quiz_callback` extrait les réponses, quiz généré sans réponses visibles |
 | 3 | `"CORRECTION: Q1=A..."` | `root_router` → `CorrectionPipeline` | `before_correcteur_callback` calcule le score en Python |
-| 4 | *(suite)* | `ProgressAgent` | `before_progress_callback` génère le rapport, propose A) ou B) |
-| 5a | `"A)"` | `root_router` → `FlashcardQuizPipeline` | Nouveau sujet → nouvelle fiche + quiz |
-| 5b | `"B)"` | `root_router` → `QuizOnlyPipeline` | `QuizAgentRetry` génère un quiz différent sur la même fiche |
+| 4 | *(suite)* | `ProgressAgent` | rapport de progression + appel `ConseilAgent` via `AgentTool` |
+| 5a | `"A)"` | `root_router` → `FlashcardQuizPipeline` | Nouveau sujet |
+| 5b | `"B)"` | `root_router` → `QuizOnlyPipeline` | Nouveau quiz sur la même fiche |
 
 ---
 
 ## 7. Structure du projet
 
-```
 tp-adk/
 ├── my_agent/
-│   ├── __init__.py
-│   ├── agent.py          # 6 agents, 3 pipelines, 6 callbacks
-│   ├── .env              # GROQ_API_KEY=...
+│   ├── __init__.py           # from . import agent
+│   ├── agent.py              # 6 agents, 3 pipelines, 5 callbacks
+│   ├── .env                  # GROQ_API_KEY=...
 │   └── tools/
 │       ├── __init__.py
-│       └── my_tools.py   # calculer_score, enregistrer_reponses,
-│                         # sauvegarder_reponses_correctes
-├── main.py               # Runner + InMemorySessionService
+│       └── my_tools.py       # calculer_score, enregistrer_reponses,
+│                             # sauvegarder_reponses_correctes
+├── tests/
+│   └── my_tests.test.json    # Scénarios de test ADK eval
+├── main.py                   # Runner + InMemorySessionService
 ├── README.md
-└── .gitignore
-```
+└── .gitignore                # .env, .venv/, __pycache__/
 
 ---
 
@@ -122,11 +144,17 @@ Exécute le scénario de démonstration : `Flutter` → correction → `Python` 
 
 ---
 
-## 9. Exemple d'utilisation
+##  Exemples de requêtes
 
-| Message utilisateur | Réponse |
-|---|---|
-| `flutter` | Fiche de révision Flutter + QCM 5 questions |
-| `CORRECTION: Q1=C, Q2=A, Q3=B, Q4=D, Q5=C` | Corrigé détaillé question par question + score /5 |
+| Message | Réponse attendue |
+|---------|-----------------|
+| `Flutter` | Fiche de révision Flutter + QCM 5 questions |
+| `CORRECTION: Q1=C, Q2=A, Q3=B, Q4=D, Q5=C` | Corrigé détaillé ✅/❌ + score /5 + progression |
 | `B)` | Nouveau quiz sur Flutter (questions différentes) |
-| `python` | Nouvelle fiche Python + QCM |
+| `Python` | Nouvelle fiche Python + QCM |
+| `CORRECTION: Q1=B, Q2=B, Q3=B, Q4=B, Q5=B` | Corrigé + historique 2 sessions + conseils |
+
+## Tests: 
+Tests ADK eval:
+
+![alt text](image-2.png)
