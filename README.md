@@ -7,8 +7,10 @@
 Ce projet implémente un système de révision pédagogique multi-agents avec Google ADK. L'utilisateur envoie un sujet, reçoit une fiche de révision et un quiz, soumet ses réponses pour obtenir un corrigé détaillé et un suivi de progression.
 
 
-## 2. Architecture
 
+##  Architecture Multi-Agents
+
+```
 RevisionOrchestrator  (LlmAgent — root_router bypass LLM)
 │
 ├── FlashcardQuizPipeline  (SequentialAgent)
@@ -22,7 +24,7 @@ RevisionOrchestrator  (LlmAgent — root_router bypass LLM)
     ├── Correcteur           → score calculé en Python pur (LLM jamais appelé)
     └── ProgressAgent        → rapport de progression + AgentTool ConseilAgent
         └── [AgentTool] ConseilAgent  → 3 conseils de révision personnalisés
-
+```
 
  **Note sur le choix SequentialAgent :** À la demande du professeur, l'architecture devait inclure un `ParallelAgent`. Cependant, dans le pipeline de correction le `ProgressAgent` dépend directement du score calculé par le `Correcteur` — un `ParallelAgent` rendrait ce flux impossible car les deux agents s'exécuteraient simultanément sans partage d'état. Pour satisfaire la contrainte tout en maintenant un fonctionnement correct, d'autres pipeline séquentiel (`QuizOnlyPipeline, CorrectionPipelin`) ont été ajoutés, ce qui démontre la gestion de plusieurs workflows distincts avec deux `SequentialAgents` imbriqués dans un `SequentialAgent` racine. 
  Ajout d'un Agent tool 
